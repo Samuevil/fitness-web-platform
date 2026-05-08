@@ -202,10 +202,10 @@
 <div id="loginScreen" class="login-screen">
     <div class="login-card">
         <h2 class="text-center mb-4" style="color: #ff2d2d;">SHAPE ADMIN</h2>
-        <p class="text-center text-muted mb-4">Digite a senha para acessar</p>
+        <p class="text-center text-muted mb-4">Acesse o painel administrativo</p>
+        <input type="text" id="adminUsername" class="form-control mb-3" placeholder="Usuário">
         <input type="password" id="adminPassword" class="form-control mb-3" placeholder="Senha">
         <button onclick="verificarLogin()" class="btn-primary-custom w-100">Entrar</button>
-        <p class="text-center text-muted mt-3 small">Senha: <strong>shape2026</strong></p>
     </div>
 </div>
 
@@ -367,12 +367,11 @@
 </div>
 
 <script>
-    const SENHA = "shape2026";
     let posts = [];
     let currentEditId = null;
     let selectedImageElement = null;
 
-    const BLOG_ADMIN_API_BASE = 'https://SEU-SERVICO.onrender.com/api'; // <-- ATUALIZE COM A URL DA SUA API NO RENDER
+    const BLOG_ADMIN_API_BASE = 'https://fitness-web-platform.onrender.com/api';
     
     // Utilitário para lidar com o token JWT
     const getAuthToken = () => localStorage.getItem('blogToken');
@@ -416,6 +415,7 @@
     }
     
     async function verificarLogin() {
+        const username = document.getElementById('adminUsername').value;
         const password = document.getElementById('adminPassword').value;
         const loginBtn = document.querySelector('#loginScreen button');
         
@@ -427,7 +427,7 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
-                    username: 'admin', // Ou o usuário que você definir no Render
+                    username: username,
                     password: password 
                 })
             });
