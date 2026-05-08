@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Shape - Treino, Saúde e Bem-Estar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #f8fafc;
+    }
+    
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+    
+    .navbar {
+        background: #000000;
+        padding: 12px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1030;
+    }
+    
+    .navbar-brand {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #ffffff;
+        text-decoration: none;
+    }
+    
+    .nav-link {
+        color: rgba(255, 255, 255, 0.85) !important;
+        font-weight: 500;
+        margin: 0 8px;
+        text-decoration: none;
+    }
+    
+    .nav-link:hover {
+        color: #ffffff !important;
+    }
+    
+    .nav-link.active {
+        color: #ff2d2d !important;
+    }
+    
+    main {
+        padding-top: 0;
+        margin-top: 0;
+        min-height: 100vh;
+    }
+    
+
+    .blog-home-hero {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        margin-top: 0;
+        background: #000;
+    }
+    
+    .carousel-item {
+        position: relative;
+        width: 100%;
+    }
+    
+    .blog-home-slide {
+        position: relative;
+        width: 100%;
+        height: 950px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .blog-home-slide .pelicula {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 1;
+    }
+    
+    .blog-home-slide .gradiente {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(180deg, rgba(15,23,42,0.3), rgba(15,23,42,0.6));
+        z-index: 1;
+    }
+    
+    .blog-home-feature-content {
+        position: relative;
+        z-index: 10;
+        max-width: 620px;
+        margin: 0 auto;
+        width: 90%;
+        padding: 2rem;
+        color: white;
+        text-align: center;
+    }
+    
+    .blog-tag {
+        display: inline-block;
+        background: #ff2d2d;
+        color: white;
+        padding: 0.35rem 0.55rem;
+        font-size: 0.62rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        border-radius: 0px;
+    }
+    
+    .blog-home-feature-content h1 {
+        font-size: clamp(1.5rem, 2.6vw, 2.45rem);
+        margin-bottom: 1rem;
+        color: white;
+        font-weight: 700;
+    }
+    
+    .blog-home-feature-content h1 .highlight {
+        color: #ff2d2d;
+    }
+    
+    .blog-home-feature-content p {
+        font-size: 0.95rem;
+        margin-bottom: 1.35rem;
+        color: rgba(255,255,255,0.9);
+        line-height: 1.5;
+    }
+    
+    .blog-link {
+        color: white;
+        font-weight: 700;
+        text-decoration: none;
+        background: #ff2d2d;
+        padding: 0.6rem 1.2rem;
+        border-radius: 0px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        border: 2px solid #ff2d2d;
+    }
+    
+    .blog-link:hover {
+        background: white;
+        color: #ff2d2d;
+        border-color: #ff2d2d;
+        transform: translateY(-2px);
+    }
+    
+    .blog-thumbnails-container {
+        position: relative;
+        z-index: 20;
+        display: flex;
+        justify-content: center;
+        margin-top: -50px;
+        margin-bottom: 0;
+        padding: 0 15px;
+    }
+    
+    .blog-thumbnails {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        background: transparent;
+        padding: 0;
+    }
+    
+    .blog-thumbnail {
+        width: 100px;
+        height: 70px;
+        background-size: cover;
+        background-position: center;
+        cursor: pointer;
+        border: 2px solid rgba(255,255,255,0.8);
+        transition: border-color 0.2s ease;
+        opacity: 1;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    
+    .blog-thumbnail:hover {
+        border-color: #ff2d2d;
+    }
+    
+    .blog-thumbnail.active {
+        border-color: #ff2d2d;
+    }
+    
+    .blog-indicators {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 20px;
+        margin-bottom: 30px;
+        padding: 0;
+        list-style: none;
+    }
+    
+    .blog-indicators button {
+        width: 12px;
+        height: 12px;
+        background-color: #cbd5e1;
+        border: none;
+        border-radius: 50%;
+        margin: 0;
+        cursor: pointer;
+        text-indent: -999px;
+        overflow: hidden;
+        padding: 0;
+        transition: all 0.2s ease;
+    }
+    
+    .blog-indicators button.active {
+        background-color: #ff2d2d;
+        transform: scale(1.2);
+    }
+    
+    .blog-indicators button:hover {
+        background-color: #ff2d2d;
+        opacity: 0.7;
+    }
+    
+    /* TOOLBARS */
+    .recentes-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin: 2rem 0 1.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .recentes-toolbar .title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        border-left: 4px solid #ff2d2d;
+        padding-left: 1rem;
+        margin: 0;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+    }
+    
+    .recentes-toolbar .line {
+        flex: 1;
+        height: 1px;
+        background: rgba(0, 0, 0, 0.15);
+    }
+    
+    .recentes-toolbar .search-box {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        position: relative;
+    }
+    
+    .recentes-toolbar .search-box input {
+        padding: 0.6rem 2.5rem 0.6rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-right: none;
+        font-size: 0.9rem;
+        width: 300px;
+        outline: none;
+        transition: all 0.2s;
+    }
+    
+    .recentes-toolbar .search-box input:focus {
+        border-color: #ff2d2d;
+    }
+    
+    .recentes-toolbar .search-box button {
+        background: #ff2d2d;
+        border: none;
+        padding: 0.6rem 1rem;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .recentes-toolbar .search-box button:hover {
+        background: #d81f2a;
+    }
+    
+    .search-box .btn-limpar {
+        position: absolute;
+        right: 45px;
+        background: transparent !important;
+        border: none !important;
+        color: #000000 !important;  
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s;
+        z-index: 5;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 0 !important;
+    }
+
+    .search-box .btn-limpar:hover {
+        color: #ff2d2d !important;  
+        background: transparent !important;
+    }
+    
+    .vejamais-toolbar {
+        margin: 2rem 0 1.5rem;
+    }
+    
+    .vejamais-toolbar .title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        border-left: 4px solid #ff2d2d;
+        padding-left: 1rem;
+        margin: 0;
+    }
+    
+   
+    .categoria-posts-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;re
+        margin: 1.5rem 0;
+    }
+    
+    .categoria-post-card {
+        background: white;
+        border-radius: 0px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+    }
+    ;
+        egoria-posw-caid:hover {
+        trdth: 100%;
+    .
+    cattransform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+    
+    .categoria-post-card .post-cover {
+        height: 280px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        display: block;
+        flex-shrink: 0;
+    }
+    
+    .categoria-post-card .post-body {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+    
+    .categoria-post-card .post-body h3 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        line-height: 1.4;
+        min-height: 44px;
+    }
+    
+    .categoria-post-card .post-body p {
+        color: #666;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+        min-height: 3.5rem; /* Garante espaço para pelo menos 3 linhas de texto */
+        flex-grow: 0;
+    }
+    
+    .categoria-post-card .blog-link {
+        align-self: flex-start;
+        margin-top: auto;
+        font-size: 0.75rem;
+        padding: 0.35rem 0.7rem;
+    }
+    
+    /* RESULTADOS DA PESQUISA - GRADE VERTICAL */
+    .resultados-pesquisa-container {
+        margin: 1.5rem 0;
+    }
+    
+    .resultados-grade {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }-c
+    
+    .resultadoard {
+        background: white;
+        border-radius: 0px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    
+    .resultado-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+    
+    .resultado-imagem {
+        height: 220px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    
+    .resultado-conteudo {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+    
+    .resultado-conteudo h3 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        line-height: 1.4;
+        min-height: 44px;
+    }
+    
+    .resultado-conteudo p {
+        color: #666;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+        min-height: 3.5rem; /* Garante espaço para pelo menos 3 linhas de texto */
+        flex-grow: 0;
+    }
+    
+    .resultado-tag {
+        display: inline-block;
+        background: #ff2d2d;
+        color: white;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        border-radius: 0px;
+        align-self: flex-start;
+    }
+    
+    .resultado-link {
+        align-self: flex-start;
+        margin-top: auto;
+    }
+    
+    .sem-resultados {
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        margin: 2rem 0;
+    }
+    
+    /* PAGINAÇÃO */
+    .paginacao {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin: 2rem 0 3rem;
+        flex-wrap: wrap;
+    }
+    
+    .paginacao button {
+        background: white;
+        border: 1px solid #e2e8f0;
+        color: #1e2a3a;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.9rem;
+        min-width: 40px;
+    }
+    
+    .paginacao button:hover {
+        background: #ff2d2d;
+        color: white;
+        border-color: #ff2d2d;
+    }
+    
+    .paginacao button.active {
+        background: #ff2d2d;
+        color: white;
+        border-color: #ff2d2d;
+    }
+    
+    .paginacao button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    /* FILTRO INFO */
+    .filtro-info {
+        background: #f1f5f9;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid #ff2d2d;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .filtro-info span {
+        color: #1e2a3a;
+        font-size: 0.9rem;
+    }
+    
+    .filtro-info .limpar-filtro {
+        background: transparent;
+        border: 1px solid #ff2d2d;
+        color: #ff2d2d;
+        padding: 0.3rem 0.8rem;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+    }
+    
+    .filtro-info .limpar-filtro:hover {
+        background: #ff2d2d;
+        color: white;
+    }
+    
+    /* HOME - LAYOUT DOS RECENTES */
+    #recentGrid {
+        width: 100%;
+    }
+    
+    .blog-recent-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        width: 100%;
+    }
+    
+    .recent-row-top {
+        display: flex;
+        gap: 1.5rem;
+        width: 100%;
+    }
+    
+    .blog-grid-card {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        align-items: flex-end;
+        padding: 1rem;
+        color: white;
+        text-decoration: none;
+        border-radius: 0px;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+    }
+    
+    .blog-grid-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(15,23,42,0.12), rgba(15,23,42,0.7));
+        z-index: 0;
+    }
+    
+    .blog-grid-title {
+        position: relative;
+        z-index: 1;
+        font-weight: 700;
+    }
+    
+    .blog-grid-card.recent-post-large {
+        flex: 2;
+        min-height: 460px;
+    }
+    
+    .recent-stacked {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .recent-stacked .blog-grid-card {
+        flex: 1;
+        min-height: 0;
+        height: calc(50% - 0.75rem);
+    }
+    
+    .recent-row-bottom {
+        display: flex;
+        gap: 1.5rem;
+        width: 100%;
+    }
+    
+    .recent-row-bottom .blog-grid-card {
+        flex: 1;
+        min-height: 200px;
+    }
+    
+    /* GRADE DE POSTS - VEJA MAIS (HOME) */
+    .posts-grade-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }d 
+    
+    .grade-car{
+        background: white;
+        border-radius: 0px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    
+    .grade-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+    
+    .grade-card .blog-cover {
+        height: 220px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        display: block;
+        flex-shrink: 0;
+    }
+    
+    .grade-card .blog-card-body {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+    
+    .grade-card .blog-card-body h3 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        line-height: 1.4;
+        min-height: 44px;
+    }
+    
+    .grade-card .blog-card-body p {
+        color: #666;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+        line-height: 1.5; /* Ligeiramente aumentado para melhor legibilidade */
+        min-height: 3.5rem; /* Garante espaço para pelo menos 3 linhas de texto */
+        flex-grow: 0; /* Permite que o parágrafo ocupe apenas o espaço necessário */
+    }
+    
+    .grade-card .blog-link {
+        align-self: flex-start;
+        margin-top: auto;
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .lista-posts-vertical {
+        margin-top: 2rem;
+    }
+    
+    .post-vertical-item {
+        display: flex;
+        gap: 1.5rem;
+        padding: 1.5rem 0;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        align-items: flex-start;
+    }
+    
+    .post-vertical-image {
+        width: 200px;
+        height: 130px;
+        background-size: cover;
+        background-position: center;
+        flex-shrink: 0;
+    }
+    
+    .post-vertical-content {
+        display: flex; /* Adicionado para usar flexbox */
+        flex-direction: column; /* Conteúdo empilhado verticalmente */
+        justify-content: center; /* Centraliza verticalmente o conteúdo */
+        flex: 1;
+    }
+    
+    .post-vertical-content h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        min-height: 2.8rem; /* Garante espaço para pelo menos 2 linhas de texto */
+    }
+    
+    .post-vertical-content p {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0.8rem;
+        line-height: 1.5;
+        min-height: 4rem; /* Garante espaço para pelo menos 3 linhas de texto */
+        flex-grow: 0;
+    }
+    
+    .post-vertical-tag {
+        display: inline-block;
+        background: #ff2d2d;
+        color: white;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        border-radius: 0px;
+    }
+    
+    .post-vertical-link-text { /* Alterado de .post-vertical-link */
+        color: #ff2d2d;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: auto; /* Empurra para o final do container flex */
+        align-self: flex-start; /* Alinha ao início do eixo cruzado */
+        font-size: 0.85rem; /* Tamanho consistente com outros links */
+    }
+    
+    .post-vertical-link:hover {
+        text-decoration: underline;
+    }
+    
+    /* Estilos para spans com aparência de botão */
+    .card-action-text {
+        color: white;
+        font-weight: 700;
+        text-decoration: none;
+        background: #ff2d2d;
+        padding: 0.6rem 1.2rem;
+        border-radius: 0px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        border: 2px solid #ff2d2d;
+        margin-top: auto; /* Garante que seja empurrado para o final */
+        align-self: flex-start; /* Alinha ao início do eixo cruzado */
+    }
+    
+    .card-action-text:hover {
+        background: white;
+        color: #ff2d2d;
+        border-color: #ff2d2d;
+        transform: translateY(-2px);
+    }
+
+    /* CARROSSEL DO FOOTER - APENAS NA HOME */
+    .footer-carousel-section {
+        background: #ffffff;
+        padding: 2rem 0;
+        margin-top: 2rem;
+        border-top: 1px solid #e2e8f0;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .footer-carousel-container {
+        position: relative;
+        max-width: 700px;
+        margin: 0 auto;
+        overflow: hidden;
+        padding: 0 35px;
+    }
+    
+    .footer-carousel-wrapper {
+        display: flex;
+        transition: transform 0.5s ease;
+        gap: 30px;
+    }
+    
+    .footer-carousel-item {
+        flex: 0 0 calc(50% - 15px);
+        display: flex;
+        gap: 15px;
+        align-items: flex-start;
+        background: transparent;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
+    .footer-carousel-image {
+        width: 90px;
+        height: 70px;
+        background-size: cover;
+        background-position: center;
+        flex-shrink: 0;
+    }
+    
+    .footer-carousel-content {
+        flex: 1;
+    }
+    
+    .footer-carousel-category {
+        font-size: 0.65rem;
+        color: #ff2d2d;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.25rem;
+    }
+    
+    .footer-carousel-title {
+        font-size: 0.85rem;
+        color: #1e2a3a;
+        font-weight: 600;
+        line-height: 1.3;
+        margin: 0;
+    }
+    
+    .footer-carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        color: #ff2d2d;
+        border: none;
+        border-radius: 0;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        z-index: 10;
+        font-size: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+    
+    .footer-carousel-btn:hover {
+        color: #d81f2a;
+        transform: translateY(-50%) scale(1.1);
+        background: transparent;
+    }
+    
+    .footer-carousel-btn-prev {
+        left: 0;
+    }
+    
+    .footer-carousel-btn-next {
+        right: 0;
+    }
+    
+    .carousel-control-prev,
+    .carousel-control-next,
+    .carousel-indicators {
+        display: none;
+    }
+    
+    .site-footer {
+        background: #ffffff;
+        color: #334155;
+        padding: 2rem 0 1.2rem;
+        margin-top: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    
+    .footer-brand {
+        color: #1e2a3a;
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .site-footer p {
+        color: #475569;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin-bottom: 0.75rem;
+        max-width: 280px;
+    }
+    
+    .footer-social {
+        display: flex;
+        gap: 0.8rem;
+        margin-top: 0.25rem;
+    }
+    
+    .footer-social a {
+        width: 34px;
+        height: 34px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        color: #475569;
+        font-size: 1rem;
+        text-decoration: none !important;
+    }
+    
+    .footer-social a:hover {
+        background: #ff2d2d;
+        color: white;
+        transform: translateY(-2px);
+        text-decoration: none !important;
+    }
+    
+    .site-footer h3 {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #1e2a3a;
+        font-family: 'Montserrat', sans-serif;
+    }
+    
+    .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .footer-links li {
+        margin-bottom: 0.5rem;
+    }
+    
+    .footer-links a,
+    .footer-links li:not(a) {
+        color: #475569;
+        font-size: 0.85rem;
+        line-height: 1.4;
+        transition: color 0.2s ease;
+        text-decoration: none;
+    }
+    
+    .footer-links a:hover {
+        color: #ff2d2d;
+    }
+    
+    .site-footer hr {
+        border-color: rgba(0, 0, 0, 0.08);
+        margin: 1.5rem 0 1rem;
+    }
+    
+    .site-footer .text-center p {
+        font-size: 0.75rem;
+        margin-bottom: 0;
+        color: #475569;
+    }
+    
+
+    .hidden {
+        display: none !important;
+    }
+    
+    
+    @media (max-width: 1200px) {
+        .posts-grade-container {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .categoria-posts-container {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .resultados-grade {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    
+    @media (max-width: 992px) {
+        .posts-grade-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .categoria-posts-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .resultados-grade {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .categoria-post-card {
+            max-width: 320px;
+        }
+    }
+    
+    @media (max-width: 767px) {
+        .site-footer {
+            padding: 1.5rem 0 1rem;
+            text-align: center;
+        }
+        .site-footer .row > div {
+            text-align: center !important;
+            margin-bottom: 1.2rem;
+        }
+        .recentes-toolbar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .recentes-toolbar .title {
+            white-space: normal;
+        }
+        .recentes-toolbar .line {
+            display: none;
+        }
+        .recentes-toolbar .search-box {
+            justify-content: center;
+        }
+        .recentes-toolbar .search-box input {
+            width: 100%;
+        }
+        .search-box .btn-limpar {
+            right: 45px;
+        }
+        .post-vertical-item {
+            flex-direction: column;
+        }
+        .post-vertical-image {
+            width: 100%;
+            height: 200px;
+        }
+        .posts-grade-container {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        .categoria-posts-container {
+            grid-template-columns: 1fr;
+        }
+        .resultados-grade {
+            grid-template-columns: 1fr;
+        }
+        .categoria-post-card {
+            max-width: 100%;
+        }
+        .grade-card .blog-cover {
+            height: 200px;
+        }
+        .footer-carousel-container {
+            padding: 0 30px;
+        }
+        .footer-carousel-item {
+            flex: 0 0 100%;
+        }
+        .footer-carousel-btn {
+            width: 25px;
+            height: 25px;
+            font-size: 1.5rem;
+        }
+        
+        /* Mobile para os recentes */
+        .recent-row-top {
+            flex-direction: column;
+        }
+        .recent-stacked {
+            flex-direction: row;
+        }
+        .recent-row-bottom {
+            flex-direction: column;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .blog-home-slide {
+            height: 550px;
+        }
+        .blog-grid-card.recent-post-large {
+            min-height: 300px;
+        }
+        .recent-row-bottom .blog-grid-card {
+            min-height: 180px;
+        }
+        .blog-thumbnail {
+            width: 75px;
+            height: 52px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .blog-home-slide {
+            height: 450px;
+        }
+        .blog-thumbnail {
+            width: 60px;
+            height: 42px;
+        }
+        .blog-home-feature-content h1 {
+            font-size: 1.1rem;
+        }
+        .blog-home-feature-content p {
+            font-size: 0.75rem;
+        }
+        .blog-grid-card.recent-post-large {
+            min-height: 250px;
+        }
+        .recent-row-bottom .blog-grid-card {
+            min-height: 150px;
+        }
+        .footer-carousel-container {
+            padding: 0 25px;
+        }
+        .footer-carousel-btn {
+            width: 22px;
+            height: 22px;
+            font-size: 1.3rem;
+        }
+    }
+    
+    .navbar-toggler {
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 4px;
+        padding: 8px;
+    }
+    
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+</style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="#" id="homeLink">SHAPE</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="#" data-cat="all" id="navHome">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-cat="Emagrecimento">Emagrecimento</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-cat="Lesões">Lesões</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-cat="Hipertrofia">Hipertrofia</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-cat="Nutrição">Nutrição</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HOME: Hero + Thumbnails + Indicators -->
+        <div id="homeHeroSection">
+            <div class="container-fluid px-0">
+                <div id="heroCarousel" class="carousel slide carousel-fade blog-home-hero" data-bs-ride="carousel" data-bs-interval="5000">
+                    <div class="carousel-inner" id="heroSlides"></div>
+                </div>
+                
+                <div class="blog-thumbnails-container">
+                    <div class="blog-thumbnails" id="blogThumbnails"></div>
+                </div>
+                
+                <div class="blog-indicators" id="blogIndicators"></div>
+            </div>
+        </div>
+
+        <div class="container">
+   
+            <div id="homeContent">
+                <div class="recentes-toolbar">
+                    <div class="title" id="sectionTitle">Recentes</div>
+                    <div class="line"></div>
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Buscar artigos..." onkeyup="buscarPostsHome()">
+                        <button class="btn-limpar" id="btnLimparBusca" onclick="limparPesquisa()" style="display: none;">✕</button>
+                        <button onclick="buscarPostsHome()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                
+              
+                <div id="resultadosPesquisa" class="resultados-pesquisa-container hidden">
+                    <div class="resultados-grade" id="resultadosLista"></div>
+                </div>
+                
+            
+                <div id="conteudoNormalHome">
+                    <div class="blog-home-grid" id="recentGrid"></div>
+
+                    <div class="vejamais-toolbar">
+                        <div class="title">Veja mais</div>
+                    </div>
+                    
+                    <div class="posts-grade-container" id="postsGradeContainer"></div>
+                    
+                    <div class="lista-posts-vertical" id="listaVertical"></div>
+                </div>
+            </div>
+
+            <div id="categoriaContent" class="hidden">
+                <div class="recentes-toolbar">
+                    <div class="title" id="categoriaTitle"></div>
+                    <div class="line"></div>
+                    <div class="search-box">
+                        <input type="text" id="categoriaSearchInput" placeholder="Buscar artigos..." onkeyup="buscarPostsCategoria()">
+                        <button class="btn-limpar" id="btnLimparBuscaCategoria" onclick="limparPesquisaCategoria()" style="display: none;">✕</button>
+                        <button onclick="buscarPostsCategoria()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                
+                <div id="categoriaFiltroInfo" class="filtro-info" style="display: none;">
+                    <span id="categoriaFiltroTexto"></span>
+                    <button class="limpar-filtro" onclick="voltarParaHome()">← Voltar para Home</button>
+                </div>
+                
+                <div class="categoria-posts-container" id="categoriaPostsContainer"></div>
+              
+                <div class="paginacao" id="paginacao"></div>
+            </div>
+        </div>
+
+        <div id="footerCarouselSection" class="footer-carousel-section">
+            <div class="container">
+                <div class="footer-carousel-container">
+                    <button class="footer-carousel-btn footer-carousel-btn-prev" id="footerCarouselPrevBtn">⟨</button>
+                    <div class="footer-carousel-wrapper" id="footerCarouselWrapper"></div>
+                    <button class="footer-carousel-btn footer-carousel-btn-next" id="footerCarouselNextBtn">⟩</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h2 class="footer-brand">SHAPE</h2>
+                    <p>Transformando vidas através do movimento inteligente e personalizado.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <h3>Contato</h3>
+                    <ul class="footer-links">
+                        <li><a href="tel:+5538999999999">(38) 99999-9999</a></li>
+                        <li><a href="mailto:contato@shape.com.br">contato@shape.com.br</a></li>
+                        <li>Montes Claros - MG</li>
+                        <li>Seg a sex: 6h às 22h</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p>&copy; 2026 Shape. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    let allPosts = [];
+    let carouselInstance = null;
+    let footerCarouselIndex = 0;
+    let footerCarouselItems = [];
+    let currentView = 'home';
+    let currentCategoria = '';
+    let currentPage = 1;
+    const postsPerPage = 9;
+    
+    const categorias = ['Emagrecimento', 'Lesões', 'Hipertrofia', 'Nutrição', 'Saúde', 'Dicas e Técnicas', 'Guias e Tutoriais'];
+    
+    function highlightTitle(title) {
+        if (!title) return '';
+        const palavras = title.split(' ');
+        const totalPalavras = palavras.length;
+        const metade = Math.ceil(totalPalavras / 2);
+        let resultado = '';
+        for (let i = 0; i < totalPalavras; i++) {
+            if (i < metade) {
+                resultado += `<span class="highlight">${palavras[i]}</span> `;
+            } else {
+                resultado += `${palavras[i]} `;
+            }
+        }
+        return resultado.trim();
+    }
+    
+    function renderGridCard(post, layoutType = 'default') {
+        let additionalClass = '';
+        if (layoutType === 'large') {
+            additionalClass = 'recent-post-large';
+        }
+        return `
+            <a href="post.html?id=${post.id}" class="blog-grid-card ${additionalClass}" style="background-image: url('${post.coverImage || '../img/background.jpg'}');">
+                <span class="blog-grid-title">${post.title}</span>
+            </a>
+        `;
+    }
+    
+    function renderGradeCard(post) {
+        return `
+            <div class="grade-card">
+                <a href="post.html?id=${post.id}" class="blog-cover" style="background-image: url('${post.coverImage || '../img/background.jpg'}'); display: block;">
+                    <span class="blog-tag" style="position: absolute; top: 12px; left: 12px; margin-bottom: 0;">${post.category}</span>
+                </a>
+                <div class="blog-card-body">
+                    <h3>${post.title}</h3>
+                    <p>${post.summary ? post.summary.substring(0, 80) : ''}...</p>
+                    <span class="card-action-text" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">Ler mais <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+        `;
+    }
+    
+    function renderResultadoPesquisaCard(post) {
+        return `
+            <div class="resultado-card">
+                <div class="resultado-imagem" style="background-image: url('${post.coverImage || '../img/background.jpg'}');">
+                    <span class="blog-tag" style="position: absolute; top: 12px; left: 12px; margin-bottom: 0;">${post.category}</span>
+                </div>
+                <div class="resultado-conteudo">
+                    <h3>${post.title}</h3>
+                    <p>${post.summary ? post.summary.substring(0, 100) : ''}...</p>
+                    <span class="card-action-text resultado-link" style="font-size: 0.75rem; padding: 0.35rem 0.7rem;">Ler mais <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+        `;
+    }
+    
+    function renderCategoriaPostCard(post) {
+        return `
+            <div class="categoria-post-card">
+                <a href="post.html?id=${post.id}" class="post-cover" style="background-image: url('${post.coverImage || '../img/background.jpg'}');">
+                    <span class="blog-tag" style="position: absolute; top: 12px; left: 12px; margin-bottom: 0;">${post.category}</span>
+                </a>
+                <div class="post-body">
+                    <h3>${post.title}</h3>
+                    <p>${post.summary ? post.summary.substring(0, 100) : ''}...</p>
+                    <span class="card-action-text" style="font-size: 0.75rem; padding: 0.35rem 0.7rem; align-self: flex-start;">Ler mais <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+        `;
+    }
+    
+    function renderPostVertical(post) {
+        return `
+            <div class="post-vertical-item">
+                <div class="post-vertical-image" style="background-image: url('${post.coverImage || '../img/background.jpg'}');"></div>
+                <div class="post-vertical-content">
+                    <div class="post-vertical-tag">${post.category}</div>
+                    <h3>${post.title}</h3>
+                    <p>${post.summary ? post.summary.substring(0, 120) : ''}...</p>
+                    <span class="post-vertical-link-text">LEIA MAIS ></span>
+                </div>
+            </div>
+        `;
+    }
+    
+    function renderFooterCarouselItem(post) {
+        return `
+            <a href="post.html?id=${post.id}" class="footer-carousel-item">
+                <div class="footer-carousel-image" style="background-image: url('${post.coverImage || '../img/background.jpg'}');"></div>
+                <div class="footer-carousel-content">
+                    <div class="footer-carousel-category">${post.category}</div>
+                    <div class="footer-carousel-title">${post.title}</div>
+                </div>
+            </a>
+        `;
+    }
+    
+    function getHeroPosts() {
+        const postsPorCategoria = {};
+        categorias.forEach(cat => { postsPorCategoria[cat] = null; });
+        for (const post of allPosts) {
+            if (!postsPorCategoria[post.category] && categorias.includes(post.category)) {
+                postsPorCategoria[post.category] = post;
+            }
+        }
+        const heroPosts = Object.values(postsPorCategoria).filter(p => p !== null);
+        return heroPosts.slice(0, 4);
+    }
+    
+    function getRecentPosts() {
+        return [...allPosts].sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt)).slice(0, 6);
+    }
+    
+    function getGradePosts() {
+        return [...allPosts].sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt)).slice(0, 4);
+    }
+    
+    function getListaVerticalPosts() {
+        return [...allPosts].sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt)).slice(6, 14);
+    }
+    
+    function getFooterCarouselPosts() {
+        if (allPosts.length === 0) return [];
+        if (allPosts.length <= 4) {
+            return [...allPosts];
+        }
+        const usedIds = [...getRecentPosts().map(p => p.id), ...getGradePosts().map(p => p.id), ...getListaVerticalPosts().map(p => p.id)];
+        const outros = allPosts.filter(p => !usedIds.includes(p.id));
+        if (outros.length >= 4) {
+            return outros.slice(0, 4);
+        }
+        return [...allPosts].sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt)).slice(0, 4);
+    }
+    
+    function updateFooterCarousel() {
+        const wrapper = document.getElementById('footerCarouselWrapper');
+        if (!wrapper) return;
+        
+        if (footerCarouselItems.length === 0) {
+            wrapper.innerHTML = '<div class="text-center text-muted" style="width: 100%; padding: 2rem;">Nenhum post disponível</div>';
+            return;
+        }
+        
+        const start = footerCarouselIndex;
+        const visibleItems = footerCarouselItems.slice(start, start + 2);
+        wrapper.innerHTML = visibleItems.map(post => renderFooterCarouselItem(post)).join('');
+    }
+    
+    function buscarPostsHome() {
+        const termo = document.getElementById('searchInput').value.toLowerCase().trim();
+        const resultadosDiv = document.getElementById('resultadosPesquisa');
+        const resultadosLista = document.getElementById('resultadosLista');
+        const conteudoNormal = document.getElementById('conteudoNormalHome');
+        const btnLimpar = document.getElementById('btnLimparBusca');
+        const sectionTitle = document.getElementById('sectionTitle');
+        
+        if (!termo) {
+            resultadosDiv.classList.add('hidden');
+            conteudoNormal.classList.remove('hidden');
+            btnLimpar.style.display = 'none';
+            sectionTitle.innerHTML = 'Recentes';
+            return;
+        }
+        
+        btnLimpar.style.display = 'flex';
+        sectionTitle.innerHTML = 'Resultados da busca';
+        
+        const resultados = allPosts.filter(p => 
+            p.title.toLowerCase().includes(termo) || 
+            (p.summary && p.summary.toLowerCase().includes(termo))
+        );
+        
+        conteudoNormal.classList.add('hidden');
+        resultadosDiv.classList.remove('hidden');
+        
+        if (resultados.length === 0) {
+            resultadosLista.innerHTML = '<div class="sem-resultados"><i class="fas fa-search fa-2x" style="color: #999; margin-bottom: 1rem; display: block;"></i><h3>Nenhum resultado encontrado</h3><p>Tente outra palavra-chave</p></div>';
+            return;
+        }
+        
+        resultadosLista.innerHTML = resultados.map(post => renderResultadoPesquisaCard(post)).join('');
+        resultadosDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function limparPesquisa() {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('resultadosPesquisa').classList.add('hidden');
+        document.getElementById('conteudoNormalHome').classList.remove('hidden');
+        document.getElementById('btnLimparBusca').style.display = 'none';
+        document.getElementById('sectionTitle').innerHTML = 'Recentes';
+    }
+    
+    function limparPesquisaCategoria() {
+        document.getElementById('categoriaSearchInput').value = '';
+        carregarPaginaCategoria(1);
+        document.getElementById('btnLimparBuscaCategoria').style.display = 'none';
+    }
+    
+    function renderizarRecentes() {
+        const recentPosts = getRecentPosts();
+        const container = document.getElementById('recentGrid');
+        
+        if (recentPosts.length >= 6) {
+            const gridHtml = `
+                <div class="blog-recent-layout">
+                    <div class="recent-row-top">
+                        <a href="post.html?id=${recentPosts[0].id}" class="blog-grid-card recent-post-large" style="background-image: url('${recentPosts[0].coverImage || '../img/background.jpg'}');">
+                            <span class="blog-grid-title">${recentPosts[0].title}</span>
+                        </a>
+                        <div class="recent-stacked">
+                            <a href="post.html?id=${recentPosts[1].id}" class="blog-grid-card" style="background-image: url('${recentPosts[1].coverImage || '../img/background.jpg'}');">
+                                <span class="blog-grid-title">${recentPosts[1].title}</span>
+                            </a>
+                            <a href="post.html?id=${recentPosts[2].id}" class="blog-grid-card" style="background-image: url('${recentPosts[2].coverImage || '../img/background.jpg'}');">
+                                <span class="blog-grid-title">${recentPosts[2].title}</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="recent-row-bottom">
+                        <a href="post.html?id=${recentPosts[3].id}" class="blog-grid-card" style="background-image: url('${recentPosts[3].coverImage || '../img/background.jpg'}');">
+                            <span class="blog-grid-title">${recentPosts[3].title}</span>
+                        </a>
+                        <a href="post.html?id=${recentPosts[4].id}" class="blog-grid-card" style="background-image: url('${recentPosts[4].coverImage || '../img/background.jpg'}');">
+                            <span class="blog-grid-title">${recentPosts[4].title}</span>
+                        </a>
+                        <a href="post.html?id=${recentPosts[5].id}" class="blog-grid-card" style="background-image: url('${recentPosts[5].coverImage || '../img/background.jpg'}');">
+                            <span class="blog-grid-title">${recentPosts[5].title}</span>
+                        </a>
+                    </div>
+                </div>
+            `;
+            container.innerHTML = gridHtml;
+        } else {
+            container.innerHTML = recentPosts.map((post) => renderGridCard(post)).join('');
+        }
+    }
+    
+    function getPostsByCategoria(categoria, page = 1) {
+        const postsFiltrados = allPosts.filter(post => post.category === categoria);
+        const start = (page - 1) * postsPerPage;
+        const end = start + postsPerPage;
+        return {
+            posts: postsFiltrados.slice(start, end),
+            total: postsFiltrados.length,
+            totalPages: Math.ceil(postsFiltrados.length / postsPerPage)
+        };
+    }
+    
+    function buscarPostsCategoria() {
+        const termo = document.getElementById('categoriaSearchInput').value.toLowerCase().trim();
+        const btnLimpar = document.getElementById('btnLimparBuscaCategoria');
+        
+        if (!termo) {
+            btnLimpar.style.display = 'none';
+            carregarPaginaCategoria(currentPage);
+            return;
+        }
+        
+        btnLimpar.style.display = 'flex';
+        
+        let postsFiltrados = allPosts.filter(post => post.category === currentCategoria);
+        postsFiltrados = postsFiltrados.filter(p => 
+            p.title.toLowerCase().includes(termo) || 
+            (p.summary && p.summary.toLowerCase().includes(termo))
+        );
+        
+        currentPage = 1;
+        const start = 0;
+        const end = postsPerPage;
+        const postsPagina = postsFiltrados.slice(start, end);
+        renderizarPostsCategoria(postsPagina, postsFiltrados.length, Math.ceil(postsFiltrados.length / postsPerPage), true);
+    }
+    
+    function renderizarPostsCategoria(posts, total, totalPages, isBusca = false) {
+        const container = document.getElementById('categoriaPostsContainer');
+        if (posts.length === 0) {
+            container.innerHTML = '<div class="alert alert-info text-center">Nenhum post encontrado.</div>';
+            document.getElementById('paginacao').innerHTML = '';
+            return;
+        }
+        
+        container.innerHTML = posts.map(post => renderCategoriaPostCard(post)).join('');
+        
+        if (!isBusca && totalPages > 1) {
+            let paginacaoHtml = '';
+            paginacaoHtml += `<button onclick="irParaPaginaCategoria(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>‹ Anterior</button>`;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    paginacaoHtml += `<button class="active" disabled>${i}</button>`;
+                } else if (Math.abs(i - currentPage) <= 2) {
+                    paginacaoHtml += `<button onclick="irParaPaginaCategoria(${i})">${i}</button>`;
+                } else if (Math.abs(i - currentPage) === 3) {
+                    paginacaoHtml += `<button disabled>...</button>`;
+                }
+            }
+            
+            paginacaoHtml += `<button onclick="irParaPaginaCategoria(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Próxima ›</button>`;
+            document.getElementById('paginacao').innerHTML = paginacaoHtml;
+        } else {
+            document.getElementById('paginacao').innerHTML = '';
+        }
+        
+        document.getElementById('categoriaFiltroInfo').style.display = 'flex';
+        document.getElementById('categoriaFiltroTexto').innerHTML = `Mostrando <strong>${total}</strong> posts da categoria: <strong>${currentCategoria}</strong>` + (totalPages > 1 ? ` | Página ${currentPage} de ${totalPages}` : '');
+    }
+    
+    function carregarPaginaCategoria(page) {
+        currentPage = page;
+        const { posts, total, totalPages } = getPostsByCategoria(currentCategoria, page);
+        renderizarPostsCategoria(posts, total, totalPages, false);
+    }
+    
+    function irParaPaginaCategoria(page) {
+        if (page < 1) return;
+        const { totalPages } = getPostsByCategoria(currentCategoria, 1);
+        if (page > totalPages) return;
+        carregarPaginaCategoria(page);
+        document.getElementById('categoriaPostsContainer').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function mostrarHome() {
+        currentView = 'home';
+        document.getElementById('homeHeroSection').classList.remove('hidden');
+        document.getElementById('homeContent').classList.remove('hidden');
+        document.getElementById('footerCarouselSection').classList.remove('hidden');
+        document.getElementById('categoriaContent').classList.add('hidden');
+        
+        limparPesquisa();
+        
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if (link.getAttribute('data-cat') === 'all') {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+        
+        renderizarBlog();
+    }
+    
+    function mostrarCategoria(categoria) {
+        currentView = 'categoria';
+        currentCategoria = categoria;
+        currentPage = 1;
+        
+        document.getElementById('homeHeroSection').classList.add('hidden');
+        document.getElementById('homeContent').classList.add('hidden');
+        document.getElementById('footerCarouselSection').classList.add('hidden');
+        document.getElementById('categoriaContent').classList.remove('hidden');
+        
+        document.getElementById('categoriaTitle').innerHTML = categoria;
+        document.getElementById('categoriaSearchInput').value = '';
+        document.getElementById('btnLimparBuscaCategoria').style.display = 'none';
+        
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if (link.getAttribute('data-cat') === categoria) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+        
+        carregarPaginaCategoria(1);
+    }
+    
+    function voltarParaHome() {
+        mostrarHome();
+    }
+    
+    function renderizarBlog() {
+        if (!allPosts.length) {
+            document.getElementById('heroSlides').innerHTML = '<div class="alert alert-info text-center">Nenhum post publicado ainda.</div>';
+            return;
+        }
+        
+        const heroPosts = getHeroPosts();
+        if (heroPosts.length) {
+            let slidesHtml = '';
+            for (let i = 0; i < heroPosts.length; i++) {
+                const p = heroPosts[i];
+                const titleHighlighted = highlightTitle(p.title);
+                slidesHtml += `
+                    <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                        <div class="blog-home-slide" style="background-image: url('${p.coverImage || '../img/background.jpg'}'); background-size: cover; background-position: center;">
+                            <div class="pelicula"></div>
+                            <div class="gradiente"></div>
+                            <div class="blog-home-feature-content">
+                                <span class="blog-tag">${p.category}</span>
+                                <h1>${titleHighlighted}</h1>
+                                <p>${p.summary ? p.summary.substring(0, 120) : 'Clique para ler o artigo completo...'}</p>
+                                <a href="post.html?id=${p.id}" class="blog-link">Ler artigo <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('heroSlides').innerHTML = slidesHtml;
+            
+            let thumbnailsHtml = '';
+            for (let i = 0; i < heroPosts.length; i++) {
+                const p = heroPosts[i];
+                thumbnailsHtml += `<div class="blog-thumbnail ${i === 0 ? 'active' : ''}" data-slide-to="${i}" style="background-image: url('${p.coverImage || '../img/background.jpg'}');"></div>`;
+            }
+            document.getElementById('blogThumbnails').innerHTML = thumbnailsHtml;
+            
+            let indicatorsHtml = '';
+            for (let i = 0; i < heroPosts.length; i++) {
+                indicatorsHtml += `<button type="button" data-slide-to="${i}" class="${i === 0 ? 'active' : ''}">${i+1}</button>`;
+            }
+            document.getElementById('blogIndicators').innerHTML = indicatorsHtml;
+            
+            if (carouselInstance) carouselInstance.dispose();
+            const carouselElement = document.getElementById('heroCarousel');
+            carouselInstance = new bootstrap.Carousel(carouselElement, {
+                interval: 5000,
+                wrap: true,
+                ride: 'carousel'
+            });
+            
+            function updateActive(activeIndex) {
+                document.querySelectorAll('#blogIndicators button').forEach((btn, idx) => {
+                    idx === activeIndex ? btn.classList.add('active') : btn.classList.remove('active');
+                });
+                document.querySelectorAll('.blog-thumbnail').forEach((thumb, idx) => {
+                    idx === activeIndex ? thumb.classList.add('active') : thumb.classList.remove('active');
+                });
+            }
+            
+            document.querySelectorAll('.blog-thumbnail').forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    const slideTo = parseInt(this.getAttribute('data-slide-to'));
+                    carouselInstance.to(slideTo);
+                    updateActive(slideTo);
+                });
+            });
+            
+            document.querySelectorAll('#blogIndicators button').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const slideTo = parseInt(this.getAttribute('data-slide-to'));
+                    carouselInstance.to(slideTo);
+                    updateActive(slideTo);
+                });
+            });
+            
+            carouselElement.addEventListener('slid.bs.carousel', function(event) {
+                updateActive(event.to);
+            });
+        }
+        
+        renderizarRecentes();
+        
+        const gradePosts = getGradePosts();
+        document.getElementById('postsGradeContainer').innerHTML = gradePosts.map(post => renderGradeCard(post)).join('');
+        
+        const listaVerticalPosts = getListaVerticalPosts();
+        document.getElementById('listaVertical').innerHTML = listaVerticalPosts.map(post => renderPostVertical(post)).join('');
+        
+        footerCarouselItems = getFooterCarouselPosts();
+        footerCarouselIndex = 0;
+        updateFooterCarousel();
+        
+        const footerPrevBtn = document.getElementById('footerCarouselPrevBtn');
+        const footerNextBtn = document.getElementById('footerCarouselNextBtn');
+        
+        if (footerPrevBtn) {
+            footerPrevBtn.onclick = () => {
+                if (footerCarouselIndex >= 2) {
+                    footerCarouselIndex -= 2;
+                    updateFooterCarousel();
+                }
+            };
+        }
+        
+        if (footerNextBtn) {
+            footerNextBtn.onclick = () => {
+                if (footerCarouselIndex + 2 < footerCarouselItems.length) {
+                    footerCarouselIndex += 2;
+                    updateFooterCarousel();
+                }
+            };
+        }
+    }
+    
+    async function carregarPosts() {
+        try {
+            const resp = await fetch('posts-data.json?t=' + Date.now());
+            const data = await resp.json();
+            allPosts = data.posts || [];
+            console.log('Posts carregados:', allPosts.length);
+            mostrarHome();
+        } catch(e) {
+            console.error('Erro ao carregar posts:', e);
+            document.getElementById('heroSlides').innerHTML = '<div class="alert alert-warning">Nenhum post encontrado. Acesse o <a href="admin.html">admin.html</a> para criar.</div>';
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const categoria = this.getAttribute('data-cat');
+                if (categoria === 'all') {
+                    mostrarHome();
+                } else {
+                    mostrarCategoria(categoria);
+                }
+            });
+        });
+        
+        document.getElementById('homeLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            mostrarHome();
+        });
+    });
+    
+    carregarPosts();
+</script>
+</body>
+</html>

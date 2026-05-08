@@ -1,0 +1,827 @@
+﻿﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Blog Shape</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #f1f5f9; padding: 20px; font-family: 'Poppins', sans-serif; }
+        .admin-header { background: #1e293b; color: white; padding: 20px; border-radius: 20px; margin-bottom: 30px; }
+        .admin-card { background: white; border-radius: 20px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 30px; }
+        .post-list-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid #e2e8f0; }
+        .post-list-item:hover { background: #f8fafc; }
+        .btn-edit { background: #3b82f6; color: white; border: none; padding: 6px 16px; border-radius: 8px; margin: 0 4px; }
+        .btn-delete { background: #ef4444; color: white; border: none; padding: 6px 16px; border-radius: 8px; margin: 0 4px; }
+        .btn-add { background: #22c55e; color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: bold; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { font-weight: 600; margin-bottom: 8px; display: block; color: #1e2a3a; }
+        .form-control, .form-select { border-radius: 12px; padding: 10px 16px; border: 2px solid #e2e8f0; }
+        .form-control:focus, .form-select:focus { border-color: #ff2d2d; outline: none; }
+        .image-preview { max-width: 200px; margin-top: 10px; border-radius: 12px; }
+        .editor-toolbar { background: #f1f5f9; padding: 12px; border-radius: 12px 12px 0 0; border: 2px solid #e2e8f0; border-bottom: none; display: flex; gap: 8px; flex-wrap: wrap; }
+        .editor-toolbar button { background: white; border: 1px solid #cbd5e1; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 500; }
+        .editor-toolbar button:hover { background: #ff2d2d; color: white; }
+        .editor-content { min-height: 500px; border: 2px solid #e2e8f0; border-radius: 0 0 12px 12px; padding: 20px; background: white; }
+        .login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #1e293b, #0f172a); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; }
+        .login-card { background: white; border-radius: 24px; padding: 40px; width: 100%; max-width: 400px; }
+        .btn-primary-custom { background: #ff2d2d; border: none; padding: 12px 24px; border-radius: 999px; color: white; font-weight: 600; }
+        .btn-primary-custom:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .editor-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        .editor-content img.selected {
+            outline: 3px solid #ff2d2d;
+            outline-offset: 2px;
+        }
+        
+        .edit-image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .edit-image-modal .modal-content {
+            background: white;
+            border-radius: 24px;
+            width: 500px;
+            max-width: 90%;
+            padding: 25px;
+        }
+        .edit-image-modal .preview-area {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .edit-image-modal .preview-area img {
+            max-width: 100%;
+            border-radius: 12px;
+        }
+        .edit-image-modal .control-group {
+            margin-bottom: 15px;
+        }
+        .edit-image-modal label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #1e293b;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .edit-image-modal input, .edit-image-modal select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+        }
+        .edit-image-modal .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .edit-image-modal .btn-primary { background: #ff2d2d; color: white; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        .edit-image-modal .btn-danger { background: #ef4444; color: white; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        .edit-image-modal .btn-secondary { background: #e2e8f0; color: #1e293b; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        
+        .hidden { display: none !important; }
+
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .admin-header,
+            .admin-card {
+                border-radius: 18px;
+            }
+            .admin-header {
+                padding: 16px;
+                margin-bottom: 18px;
+            }
+            .admin-card {
+                padding: 16px;
+                margin-bottom: 18px;
+            }
+            .admin-header .d-flex,
+            .admin-card > .d-flex.justify-content-between.align-items-center.mb-4,
+            #postForm .d-flex.gap-3.mt-3,
+            #imageModal .d-flex.gap-3,
+            .edit-image-modal .btn-group {
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+            .post-list-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.9rem;
+                padding: 14px 0;
+            }
+            .post-list-item > div:last-child {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                width: 100%;
+            }
+            .btn-edit,
+            .btn-delete,
+            .btn-add,
+            .btn-primary-custom,
+            .btn.btn-secondary {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+            .editor-toolbar {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding: 10px;
+                gap: 6px;
+            }
+            .editor-toolbar button {
+                flex: 0 0 auto;
+                white-space: nowrap;
+                padding: 8px 10px;
+                font-size: 0.84rem;
+            }
+            .editor-content {
+                min-height: 320px;
+                padding: 14px;
+            }
+            .login-card {
+                padding: 24px;
+                border-radius: 20px;
+            }
+            .edit-image-modal .modal-content,
+            #imageModal > div {
+                width: min(100%, 440px) !important;
+                padding: 20px !important;
+                border-radius: 18px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .admin-header h1,
+            .admin-card h2 {
+                font-size: 1.35rem;
+            }
+            .admin-header p,
+            .post-list-item p,
+            .form-group label {
+                font-size: 0.88rem;
+            }
+            .form-control,
+            .form-select {
+                padding: 10px 12px;
+                font-size: 0.92rem;
+            }
+            .editor-content {
+                min-height: 280px;
+                padding: 12px;
+            }
+            .login-card {
+                padding: 20px;
+            }
+            .image-preview {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="loginScreen" class="login-screen">
+    <div class="login-card">
+        <h2 class="text-center mb-4" style="color: #ff2d2d;">SHAPE ADMIN</h2>
+        <p class="text-center text-muted mb-4">Digite a senha para acessar</p>
+        <input type="password" id="adminPassword" class="form-control mb-3" placeholder="Senha">
+        <button onclick="verificarLogin()" class="btn-primary-custom w-100">Entrar</button>
+        <p class="text-center text-muted mt-3 small">Senha: <strong>shape2026</strong></p>
+    </div>
+</div>
+
+<div id="adminPanel" style="display: none;">
+    <div class="container">
+        <div class="admin-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1><i class="fas fa-newspaper"></i> Blog Shape - Admin</h1>
+                    <p class="mb-0">Crie, edite e gerencie seus posts</p>
+                </div>
+                <button onclick="logout()" class="btn btn-outline-light">Sair</button>
+            </div>
+        </div>
+
+        <div class="admin-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Todos os Posts</h2>
+                <button onclick="showPostForm()" class="btn-add"><i class="fas fa-plus"></i> Novo Post</button>
+            </div>
+            <div id="postsList"></div>
+        </div>
+
+        <div id="postForm" class="admin-card" style="display: none;">
+            <h2 id="formTitle" class="mb-4">Novo Post</h2>
+            <input type="hidden" id="postId">
+            
+            <div class="form-group">
+                <label>T&iacute;tulo *</label>
+                <input type="text" id="postTitle" class="form-control" placeholder="Digite o t&iacute;tulo">
+            </div>
+            
+            <div class="form-group">
+                <label>Resumo *</label>
+                <textarea id="postSummary" class="form-control" rows="3" placeholder="Resumo do post"></textarea>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select id="postCategory" class="form-select">
+                            <option value="Dicas e T&eacute;cnicas de Treino">Dicas e T&eacute;cnicas de Treino</option>
+                            <option value="Guias e Tutoriais">Guias e Tutoriais</option>
+                            <option value="Nutri&ccedil;&atilde;o e Suplementa&ccedil;&atilde;o">Nutri&ccedil;&atilde;o e Suplementa&ccedil;&atilde;o</option>
+                            <option value="Sa&uacute;de e Bem-Estar">Sa&uacute;de e Bem-Estar</option>
+                            <option value="Treino e Exerc&iacute;cios">Treino e Exerc&iacute;cios</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Tempo de leitura (min)</label>
+                        <input type="number" id="postReadTime" class="form-control" value="5">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Thumbnail (imagem de capa)</label>
+                <input type="file" id="thumbUpload" class="form-control mb-2" accept="image/*">
+                <input type="text" id="thumbUrl" class="form-control" placeholder="Ou cole a URL da imagem">
+                <div id="thumbPreview"></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Classe CSS da capa</label>
+                <select id="postCoverClass" class="form-select">
+                    <option value="">Padr&atilde;o (sem gradiente)</option>
+                    <option value="blog-cover-weightloss">Emagrecimento</option>
+                    <option value="blog-cover-rehab">Les&otilde;es</option>
+                    <option value="blog-cover-hypertrophy">Hipertrofia</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Conte&uacute;do *</label>
+                <div class="editor-toolbar">
+                    <button type="button" onclick="formatText('bold')"><b>Negrito</b></button>
+                    <button type="button" onclick="formatText('italic')"><i>It&aacute;lico</i></button>
+                    <button type="button" onclick="insertHeading(2)">H2</button>
+                    <button type="button" onclick="insertHeading(3)">H3</button>
+                    <button type="button" onclick="insertList()">Lista</button>
+                    <button type="button" onclick="insertOrderedList()">Lista Numerada</button>
+                    <button type="button" onclick="showImageModal()"><i class="fas fa-image"></i> Inserir Imagem</button>
+                </div>
+                <div id="editorContent" class="editor-content" contenteditable="true"></div>
+            </div>
+            
+            <div class="d-flex gap-3 mt-3">
+                <button onclick="savePost()" class="btn-primary-custom" id="savePostBtn">Salvar Post</button>
+                <button onclick="cancelForm()" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para inserir imagem -->
+<div id="imageModal" class="hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1001;">
+    <div style="background: white; border-radius: 24px; padding: 30px; max-width: 500px; width: 90%;">
+        <h3 class="mb-4">Inserir Imagem</h3>
+        <div class="mb-3">
+            <label>Upload de arquivo</label>
+            <input type="file" id="modalImageUpload" class="form-control" accept="image/*">
+        </div>
+        <div class="mb-3">
+            <label>Ou URL da imagem</label>
+            <input type="text" id="modalImageUrl" class="form-control" placeholder="https://exemplo.com/imagem.jpg">
+        </div>
+        <div class="mb-3">
+            <label>Descri&ccedil;&atilde;o (alt text)</label>
+            <input type="text" id="modalImageAlt" class="form-control" placeholder="Descri&ccedil;&atilde;o da imagem">
+        </div>
+        <div class="mb-3">
+            <label>Largura (px)</label>
+            <input type="number" id="modalImageWidth" class="form-control" value="400" min="50" max="800">
+        </div>
+        <div class="mb-3">
+            <label>Alinhamento</label>
+            <select id="modalImageAlign" class="form-select">
+                <option value="left">&larr; Esquerda (texto ao redor)</option>
+                <option value="center">Centralizado</option>
+                <option value="right">&rarr; Direita (texto ao redor)</option>
+            </select>
+        </div>
+        <div class="d-flex gap-3">
+            <button onclick="insertImageToEditor()" class="btn-primary-custom">Inserir</button>
+            <button onclick="closeImageModal()" class="btn btn-secondary">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar imagem -->
+<div id="editImageModal" class="edit-image-modal hidden">
+    <div class="modal-content">
+        <h4 class="mb-3"><i class="fas fa-image"></i> Editar Imagem</h4>
+        <div class="preview-area">
+            <img id="editImagePreview" src="" alt="Preview">
+        </div>
+        <div class="control-group">
+            <label>Largura (px)</label>
+            <input type="range" id="editImageWidthSlider" min="50" max="800" value="300">
+            <input type="number" id="editImageWidthNumber" style="margin-top: 8px;">
+        </div>
+        <div class="control-group">
+            <label>Alinhamento</label>
+            <select id="editImageAlign">
+                <option value="left">&larr; Esquerda (texto ao redor)</option>
+                <option value="center">Centralizado</option>
+                <option value="right">&rarr; Direita (texto ao redor)</option>
+            </select>
+        </div>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="applyImageChanges()">Aplicar</button>
+            <button class="btn-danger" onclick="deleteCurrentImage()">Excluir</button>
+            <button class="btn-secondary" onclick="closeEditImageModal()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const SENHA = "shape2026";
+    let posts = [];
+    let currentEditId = null;
+    let selectedImageElement = null;
+
+    const BLOG_ADMIN_API_BASE = 'https://SEU-SERVICO.onrender.com/api'; // <-- ATUALIZE COM A URL DA SUA API NO RENDER
+    
+    // Utilitário para lidar com o token JWT
+    const getAuthToken = () => localStorage.getItem('blogToken');
+
+    const categoryMap = {
+        'Emagrecimento': 'Treino e Exerc\u00edcios',
+        'Les\u00f5es': 'Sa\u00fade e Bem-Estar',
+        'Hipertrofia': 'Treino e Exerc\u00edcios',
+        'Nutri\u00e7\u00e3o': 'Nutri\u00e7\u00e3o e Suplementa\u00e7\u00e3o',
+        'Sa\u00fade': 'Sa\u00fade e Bem-Estar',
+        'Dicas e T\u00e9cnicas': 'Dicas e T\u00e9cnicas de Treino',
+        'Guias e Tutoriais': 'Guias e Tutoriais',
+        'Dicas e T\u00e9cnicas de Treino': 'Dicas e T\u00e9cnicas de Treino',
+        'Nutri\u00e7\u00e3o e Suplementa\u00e7\u00e3o': 'Nutri\u00e7\u00e3o e Suplementa\u00e7\u00e3o',
+        'Sa\u00fade e Bem-Estar': 'Sa\u00fade e Bem-Estar',
+        'Treino e Exerc\u00edcios': 'Treino e Exerc\u00edcios'
+    };
+
+    function normalizeCategory(category) {
+        return categoryMap[category] || category;
+    }
+
+    function fixMojibake(text) {
+        if (typeof text !== 'string') return text;
+        if (!/[ÃÂâð]/.test(text)) return text;
+        try {
+            return decodeURIComponent(escape(text));
+        } catch (error) {
+            return text;
+        }
+    }
+
+    function normalizePost(post) {
+        return {
+            ...post,
+            title: fixMojibake(post.title || ''),
+            summary: fixMojibake(post.summary || ''),
+            content: fixMojibake(post.content || ''),
+            category: normalizeCategory(fixMojibake(post.category || ''))
+        };
+    }
+    
+    async function verificarLogin() {
+        const password = document.getElementById('adminPassword').value;
+        const loginBtn = document.querySelector('#loginScreen button');
+        
+        try {
+            loginBtn.disabled = true;
+            loginBtn.innerText = 'Autenticando...';
+
+            const response = await fetch(`${BLOG_ADMIN_API_BASE}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    username: 'admin', // Ou o usuário que você definir no Render
+                    password: password 
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.token) {
+                localStorage.setItem('blogToken', data.token);
+                localStorage.setItem('blogAuth', 'true');
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                carregarPosts();
+                setupImageClick();
+            } else {
+                alert(data.error || 'Falha na autenticação');
+            }
+        } catch (error) {
+            console.error('Erro no login:', error);
+            alert('Erro ao conectar com a API no Render. Verifique se o serviço está ativo.');
+        } finally {
+            loginBtn.disabled = false;
+            loginBtn.innerText = 'Entrar';
+        }
+    }
+    
+    function logout() {
+        localStorage.removeItem('blogAuth');
+        localStorage.removeItem('blogToken');
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('adminPanel').style.display = 'none';
+    }
+    
+    if (localStorage.getItem('blogAuth') === 'true') {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        carregarPosts();
+        setupImageClick();
+    }
+    
+    async function carregarPosts() {
+        try {
+            const resp = await fetch('posts-data.json?t=' + Date.now());
+            const data = await resp.json();
+            posts = (data.posts || []).map(normalizePost);
+            atualizarLista();
+        } catch(e) { 
+            posts = []; 
+            atualizarLista(); 
+        }
+    }
+    
+    function atualizarLista() {
+        const container = document.getElementById('postsList');
+        if (!posts.length) { 
+            container.innerHTML = '<div class="text-center py-5">Nenhum post. Clique em "Novo Post"</div>'; 
+            return; 
+        }
+        container.innerHTML = posts.sort((a,b)=>new Date(b.publishedAt)-new Date(a.publishedAt)).map(p => `
+            <div class="post-list-item">
+                <div class="d-flex align-items-center gap-3">
+                    <img src="${p.coverImage || '../img/placeholder.jpg'}" style="width: 50px; height: 50px; object-fit: contain; background: #000; border-radius: 8px;">
+                    <div>
+                        <strong>${escapeHtml(p.title)}</strong><br>
+                        <span class="badge bg-secondary" style="font-size: 0.7rem;">${p.category}</span>
+                        <small class="text-muted ms-2">${new Date(p.publishedAt).toLocaleDateString()}</small>
+                    </div>
+                </div>
+                <div><button onclick="editarPost('${p.id}')" class="btn-edit">Editar</button><button onclick="deletarPost('${p.id}')" class="btn-delete">Excluir</button></div>
+            </div>
+        `).join('');
+    }
+    
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    function showPostForm(id = null) {
+        document.getElementById('postForm').style.display = 'block';
+        if (id) {
+            const post = posts.find(p => p.id === id);
+            if (post) {
+                currentEditId = id;
+                document.getElementById('postId').value = post.id;
+                document.getElementById('postTitle').value = post.title;
+                document.getElementById('postSummary').value = post.summary;
+                document.getElementById('postCategory').value = post.category;
+                document.getElementById('postReadTime').value = post.readTime;
+                document.getElementById('postCoverClass').value = post.coverClass || '';
+                document.getElementById('editorContent').innerHTML = post.content || '';
+                if (post.coverImage) document.getElementById('thumbPreview').innerHTML = `<img src="${post.coverImage}" class="image-preview">`;
+                document.getElementById('thumbUrl').value = post.coverImage || '';
+                document.getElementById('formTitle').textContent = 'Editar Post';
+                setTimeout(setupImageClick, 200);
+            }
+        } else { 
+            currentEditId = null;
+            document.getElementById('postId').value = '';
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postSummary').value = '';
+            document.getElementById('postCategory').value = 'Dicas e T\u00e9cnicas de Treino';
+            document.getElementById('postReadTime').value = '5';
+            document.getElementById('postCoverClass').value = '';
+            document.getElementById('editorContent').innerHTML = '';
+            document.getElementById('thumbPreview').innerHTML = '';
+            document.getElementById('thumbUrl').value = '';
+            document.getElementById('thumbUpload').value = '';
+            document.getElementById('formTitle').textContent = 'Novo Post';
+            setTimeout(setupImageClick, 200);
+        }
+    }
+    
+    function cancelForm() { 
+        document.getElementById('postForm').style.display = 'none';
+    }
+    
+    function savePost() {
+        const title = document.getElementById('postTitle').value.trim();
+        const summary = document.getElementById('postSummary').value.trim();
+        if (!title || !summary) { alert('Preencha tÃ­tulo e resumo'); return; }
+        
+        let coverImage = document.getElementById('thumbUrl').value;
+        const uploadFile = document.getElementById('thumbUpload').files[0];
+        
+        const salvar = (img) => {
+            const postData = {
+                id: currentEditId || 'post-' + Date.now(),
+                title: title,
+                summary: summary,
+                category: document.getElementById('postCategory').value,
+                readTime: parseInt(document.getElementById('postReadTime').value) || 5,
+                coverClass: document.getElementById('postCoverClass').value,
+                content: document.getElementById('editorContent').innerHTML,
+                coverImage: img || '',
+                publishedAt: currentEditId ? (posts.find(p=>p.id===currentEditId)?.publishedAt || new Date().toISOString()) : new Date().toISOString()
+            };
+            if (currentEditId) { 
+                const index = posts.findIndex(p => p.id === currentEditId); 
+                if (index !== -1) posts[index] = postData; 
+            } else { 
+                posts.push(postData); 
+            }
+            salvarJSON();
+            cancelForm();
+            atualizarLista();
+        };
+        
+        if (uploadFile) { 
+            const reader = new FileReader(); 
+            reader.onload = e => salvar(e.target.result); 
+            reader.readAsDataURL(uploadFile); 
+        } else { 
+            salvar(coverImage); 
+        }
+    }
+    
+    function deletarPost(id) { 
+        if (confirm('Tem certeza que deseja excluir este post?')) { 
+            posts = posts.filter(p => p.id !== id); 
+            salvarJSON(); 
+            atualizarLista(); 
+        } 
+    }
+
+    function getSaveEndpoint() {
+        return `${BLOG_ADMIN_API_BASE}/posts`;
+    }
+    
+    async function salvarJSON() {
+        const saveButton = document.getElementById('savePostBtn');
+        const token = getAuthToken();
+
+        if (!token) {
+            alert('Sessão expirada. Faça login novamente.');
+            logout();
+            return;
+        }
+
+        if (saveButton) { 
+            saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...'; 
+            saveButton.disabled = true; 
+        }
+
+        try {
+            const response = await fetch(getSaveEndpoint(), {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ posts: posts })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                if (response.status === 401 || response.status === 403) {
+                    alert('Sessão inválida. Por favor, saia e entre novamente.');
+                }
+                throw new Error(data.error || 'Erro desconhecido ao salvar');
+            }
+
+            alert(`Post salvo com sucesso! A alteração aparecerá no site em alguns instantes.`);
+        } catch (error) {
+            console.error('Erro ao salvar:', error);
+            alert(`Erro ao salvar no servidor: ${error.message}`);
+        } finally {
+            if (saveButton) { 
+                saveButton.innerHTML = 'Salvar Post'; 
+                saveButton.disabled = false; 
+            }
+        }
+    }
+    
+    function formatText(cmd) { document.execCommand(cmd, false, null); }
+    function insertHeading(level) { document.execCommand('formatBlock', false, `h${level}`); }
+    function insertList() { document.execCommand('insertUnorderedList', false, null); }
+    function insertOrderedList() { document.execCommand('insertOrderedList', false, null); }
+    
+    function showImageModal() { 
+        document.getElementById('modalImageUpload').value = '';
+        document.getElementById('modalImageUrl').value = '';
+        document.getElementById('modalImageAlt').value = '';
+        document.getElementById('modalImageWidth').value = '400';
+        document.getElementById('modalImageAlign').value = 'center';
+        document.getElementById('imageModal').classList.remove('hidden');
+        document.getElementById('imageModal').style.display = 'flex';
+    }
+    
+    function closeImageModal() { 
+        document.getElementById('imageModal').style.display = 'none';
+        document.getElementById('imageModal').classList.add('hidden');
+    }
+    
+    function insertImageToEditor() {
+        let imgSrc = '';
+        const file = document.getElementById('modalImageUpload').files[0];
+        const width = document.getElementById('modalImageWidth').value;
+        const align = document.getElementById('modalImageAlign').value;
+        const alt = document.getElementById('modalImageAlt').value || 'Imagem do post';
+        
+        let style = `width:${width}px; height:auto; border-radius:12px; max-width:100%;`;
+        if (align === 'left') style += ' float:left; margin:10px 20px 10px 0;';
+        else if (align === 'right') style += ' float:right; margin:10px 0 10px 20px;';
+        else style += ' display:block; margin:20px auto;';
+        
+        const inserir = (src) => {
+            document.execCommand('insertHTML', false, `<img src="${src}" alt="${alt}" style="${style}" class="editable-img">`);
+            closeImageModal();
+            setTimeout(setupImageClick, 200);
+        };
+        
+        if (file) { 
+            const reader = new FileReader(); 
+            reader.onload = e => inserir(e.target.result); 
+            reader.readAsDataURL(file); 
+        } else { 
+            imgSrc = document.getElementById('modalImageUrl').value; 
+            if (imgSrc) inserir(imgSrc); 
+            else alert('Selecione uma imagem ou informe uma URL'); 
+        }
+    }
+    
+    // Configurar clique nas imagens para editar
+    function setupImageClick() {
+        const editor = document.getElementById('editorContent');
+        if (!editor) return;
+        editor.querySelectorAll('img').forEach(img => {
+            img.removeEventListener('click', onImageClick);
+            img.addEventListener('click', onImageClick);
+        });
+    }
+    
+    function onImageClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        selectedImageElement = e.target;
+        
+        // Remover seleÃ§Ã£o anterior
+        document.querySelectorAll('.editor-content img.selected').forEach(img => img.classList.remove('selected'));
+        selectedImageElement.classList.add('selected');
+        
+        // Abrir modal de ediÃ§Ã£o
+        openEditImageModal(selectedImageElement);
+    }
+    
+    function openEditImageModal(img) {
+        // Obter valores atuais
+        let currentWidth = img.style.width ? parseInt(img.style.width) : img.offsetWidth;
+        if (isNaN(currentWidth) || currentWidth < 50) currentWidth = 300;
+        
+        let currentAlign = 'center';
+        if (img.style.float === 'left') currentAlign = 'left';
+        else if (img.style.float === 'right') currentAlign = 'right';
+        
+        // Preview
+        const preview = document.getElementById('editImagePreview');
+        preview.src = img.src;
+        preview.style.width = currentWidth + 'px';
+        
+        // Configurar controles
+        const slider = document.getElementById('editImageWidthSlider');
+        const numberInput = document.getElementById('editImageWidthNumber');
+        slider.value = currentWidth;
+        numberInput.value = currentWidth;
+        
+        const updatePreview = () => {
+            const val = slider.value;
+            numberInput.value = val;
+            document.getElementById('editImagePreview').style.width = val + 'px';
+        };
+        
+        slider.oninput = updatePreview;
+        numberInput.oninput = () => { slider.value = numberInput.value; updatePreview(); };
+        
+        document.getElementById('editImageAlign').value = currentAlign;
+        
+        // Mostrar modal
+        const modal = document.getElementById('editImageModal');
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+    }
+    
+    function applyImageChanges() {
+        if (!selectedImageElement) return;
+        
+        const width = document.getElementById('editImageWidthSlider').value;
+        const align = document.getElementById('editImageAlign').value;
+        
+        // Aplicar largura
+        selectedImageElement.style.width = width + 'px';
+        selectedImageElement.style.height = 'auto';
+        
+        // Resetar estilos de alinhamento
+        selectedImageElement.style.float = '';
+        selectedImageElement.style.display = '';
+        selectedImageElement.style.margin = '';
+        
+        // Aplicar novo alinhamento
+        if (align === 'left') {
+            selectedImageElement.style.float = 'left';
+            selectedImageElement.style.margin = '10px 20px 10px 0';
+        } else if (align === 'right') {
+            selectedImageElement.style.float = 'right';
+            selectedImageElement.style.margin = '10px 0 10px 20px';
+        } else {
+            selectedImageElement.style.display = 'block';
+            selectedImageElement.style.margin = '20px auto';
+        }
+        
+        closeEditImageModal();
+    }
+    
+    function deleteCurrentImage() {
+        if (selectedImageElement && confirm('Tem certeza que deseja remover esta imagem?')) {
+            selectedImageElement.remove();
+            closeEditImageModal();
+        }
+    }
+    
+    function closeEditImageModal() {
+        const modal = document.getElementById('editImageModal');
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+        if (selectedImageElement) {
+            selectedImageElement.classList.remove('selected');
+            selectedImageElement = null;
+        }
+    }
+    
+    function editarPost(id) { showPostForm(id); }
+    
+    // Preview de thumbnail
+    document.getElementById('thumbUpload')?.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                document.getElementById('thumbPreview').innerHTML = `<img src="${ev.target.result}" class="image-preview">`;
+                document.getElementById('thumbUrl').value = '';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    document.getElementById('thumbUrl')?.addEventListener('input', function(e) {
+        if (e.target.value) {
+            document.getElementById('thumbPreview').innerHTML = `<img src="${e.target.value}" class="image-preview">`;
+        } else if (!document.getElementById('thumbUpload').files.length) {
+            document.getElementById('thumbPreview').innerHTML = '';
+        }
+    });
+</script>
+</body>
+</html>
