@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -880,7 +880,7 @@
         function renderPost(post) {
             if (!post) return;
             
-            document.getElementById('postHero').style.backgroundImage = `url('${post.coverImage || '../img/background.jpg'}')`;
+            document.getElementById('postHero').style.backgroundImage = `url('${post.coverImage || '../img/hero-background.jpg'}')`;
             document.title = `${post.title} | Shape Blog`;
             
             let contentHtml = `
@@ -932,7 +932,7 @@
             if (container) {
                 container.innerHTML = recentPosts.map(post => `
                     <a href="post.html?id=${post.id}" class="blog-sidebar-post">
-                        <div class="blog-sidebar-thumb" style="background-image: url('${post.coverImage || '../img/background.jpg'}');"></div>
+                        <div class="blog-sidebar-thumb" style="background-image: url('${post.coverImage || '../img/hero-background.jpg'}');"></div>
                         <div>
                             <h4>${escapeHtml(post.title)}</h4>
                             <p>${escapeHtml(post.category)}</p>

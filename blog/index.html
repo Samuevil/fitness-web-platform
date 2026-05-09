@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -1875,7 +1875,7 @@
         function renderGradeCard(post) {
             return `
                 <a href="post.html?id=${post.id}" class="grade-card card-link-card" aria-label="Abrir post ${escapeHtml(post.title)}">
-                    <div class="blog-cover" style="background-image: url('${post.coverImage || '../img/background.jpg'}');">
+                    <div class="blog-cover" style="background-image: url('${post.coverImage || '../img/hero-background.jpg'}');">
                         <span class="blog-tag">${escapeHtml(post.category)}</span>
                     </div>
                     <div class="blog-card-body">
@@ -1890,7 +1890,7 @@
         function renderPostVertical(post) {
             return `
                 <a href="post.html?id=${post.id}" class="post-vertical-item card-link-card" aria-label="Abrir post ${escapeHtml(post.title)}">
-                    <div class="post-vertical-image" style="background-image: url('${post.coverImage || '../img/background.jpg'}'); position: relative;">
+                    <div class="post-vertical-image" style="background-image: url('${post.coverImage || '../img/hero-background.jpg'}'); position: relative;">
                         <span class="blog-tag">${escapeHtml(post.category)}</span>
                     </div>
                     <div class="post-vertical-content">
@@ -2134,26 +2134,26 @@
             if (recentPosts.length >= 6) {
                 container.innerHTML = `
                     <div class="recent-row-top">
-                        <a href="post.html?id=${recentPosts[0].id}" class="blog-grid-card recent-post-large" style="background-image: url('${recentPosts[0].coverImage || '../img/background.jpg'}');">
+                        <a href="post.html?id=${recentPosts[0].id}" class="blog-grid-card recent-post-large" style="background-image: url('${recentPosts[0].coverImage || '../img/hero-background.jpg'}');">
                             <span class="blog-grid-title">${escapeHtml(recentPosts[0].title)}</span>
                         </a>
                         <div class="recent-stacked">
-                            <a href="post.html?id=${recentPosts[1].id}" class="blog-grid-card" style="background-image: url('${recentPosts[1].coverImage || '../img/background.jpg'}');">
+                            <a href="post.html?id=${recentPosts[1].id}" class="blog-grid-card" style="background-image: url('${recentPosts[1].coverImage || '../img/hero-background.jpg'}');">
                                 <span class="blog-grid-title">${escapeHtml(recentPosts[1].title)}</span>
                             </a>
-                            <a href="post.html?id=${recentPosts[2].id}" class="blog-grid-card" style="background-image: url('${recentPosts[2].coverImage || '../img/background.jpg'}');">
+                            <a href="post.html?id=${recentPosts[2].id}" class="blog-grid-card" style="background-image: url('${recentPosts[2].coverImage || '../img/hero-background.jpg'}');">
                                 <span class="blog-grid-title">${escapeHtml(recentPosts[2].title)}</span>
                             </a>
                         </div>
                     </div>
                     <div class="recent-row-bottom">
-                        <a href="post.html?id=${recentPosts[3].id}" class="blog-grid-card" style="background-image: url('${recentPosts[3].coverImage || '../img/background.jpg'}');">
+                        <a href="post.html?id=${recentPosts[3].id}" class="blog-grid-card" style="background-image: url('${recentPosts[3].coverImage || '../img/hero-background.jpg'}');">
                             <span class="blog-grid-title">${escapeHtml(recentPosts[3].title)}</span>
                         </a>
-                        <a href="post.html?id=${recentPosts[4].id}" class="blog-grid-card" style="background-image: url('${recentPosts[4].coverImage || '../img/background.jpg'}');">
+                        <a href="post.html?id=${recentPosts[4].id}" class="blog-grid-card" style="background-image: url('${recentPosts[4].coverImage || '../img/hero-background.jpg'}');">
                             <span class="blog-grid-title">${escapeHtml(recentPosts[4].title)}</span>
                         </a>
-                        <a href="post.html?id=${recentPosts[5].id}" class="blog-grid-card" style="background-image: url('${recentPosts[5].coverImage || '../img/background.jpg'}');">
+                        <a href="post.html?id=${recentPosts[5].id}" class="blog-grid-card" style="background-image: url('${recentPosts[5].coverImage || '../img/hero-background.jpg'}');">
                             <span class="blog-grid-title">${escapeHtml(recentPosts[5].title)}</span>
                         </a>
                     </div>
@@ -2287,7 +2287,7 @@
                 heroPosts.forEach((p, i) => {
                     slidesHtml += `
                         <div class="carousel-item ${i === 0 ? 'active' : ''}">
-                            <div class="blog-home-slide" style="background-image: url('${p.coverImage || '../img/background.jpg'}');">
+                            <div class="blog-home-slide" style="background-image: url('${p.coverImage || '../img/hero-background.jpg'}');">
                                 <div class="pelicula"></div>
                                 <div class="gradiente"></div>
                                 <div class="blog-home-feature-content">
@@ -2304,7 +2304,7 @@
                 
                 let thumbnailsHtml = '';
                 heroPosts.forEach((p, i) => {
-                    thumbnailsHtml += `<div class="blog-thumbnail ${i === 0 ? 'active' : ''}" data-slide-to="${i}" style="background-image: url('${p.coverImage || '../img/background.jpg'}');"></div>`;
+                    thumbnailsHtml += `<div class="blog-thumbnail ${i === 0 ? 'active' : ''}" data-slide-to="${i}" style="background-image: url('${p.coverImage || '../img/hero-background.jpg'}');"></div>`;
                 });
                 document.getElementById('blogThumbnails').innerHTML = thumbnailsHtml;
                 
