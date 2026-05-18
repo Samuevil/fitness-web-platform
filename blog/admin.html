@@ -280,6 +280,15 @@
                     <option value="blog-cover-hypertrophy">Hipertrofia</option>
                 </select>
             </div>
+
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="postFeatured">
+                    <label class="form-check-label" for="postFeatured">
+                        Destacar este post no hero do blog
+                    </label>
+                </div>
+            </div>
             
             <div class="form-group">
                 <label>Conte&uacute;do *</label>
@@ -410,7 +419,8 @@
             title: fixMojibake(post.title || ''),
             summary: fixMojibake(post.summary || ''),
             content: fixMojibake(post.content || ''),
-            category: normalizeCategory(fixMojibake(post.category || ''))
+            category: normalizeCategory(fixMojibake(post.category || '')),
+            featured: Boolean(post.featured)
         };
     }
     
@@ -492,6 +502,7 @@
                     <div>
                         <strong>${escapeHtml(p.title)}</strong><br>
                         <span class="badge bg-secondary" style="font-size: 0.7rem;">${p.category}</span>
+                        ${p.featured ? '<span class="badge bg-warning text-dark ms-2" style="font-size: 0.7rem;">Hero</span>' : ''}
                         <small class="text-muted ms-2">${new Date(p.publishedAt).toLocaleDateString()}</small>
                     </div>
                 </div>
@@ -519,6 +530,7 @@
                 document.getElementById('postCategory').value = post.category;
                 document.getElementById('postReadTime').value = post.readTime;
                 document.getElementById('postCoverClass').value = post.coverClass || '';
+                document.getElementById('postFeatured').checked = Boolean(post.featured);
                 document.getElementById('editorContent').innerHTML = post.content || '';
                 if (post.coverImage) document.getElementById('thumbPreview').innerHTML = `<img src="${post.coverImage}" class="image-preview">`;
                 document.getElementById('thumbUrl').value = post.coverImage || '';
@@ -533,6 +545,7 @@
             document.getElementById('postCategory').value = 'Dicas e T\u00e9cnicas de Treino';
             document.getElementById('postReadTime').value = '5';
             document.getElementById('postCoverClass').value = '';
+            document.getElementById('postFeatured').checked = false;
             document.getElementById('editorContent').innerHTML = '';
             document.getElementById('thumbPreview').innerHTML = '';
             document.getElementById('thumbUrl').value = '';
@@ -562,6 +575,7 @@
                 category: document.getElementById('postCategory').value,
                 readTime: parseInt(document.getElementById('postReadTime').value) || 5,
                 coverClass: document.getElementById('postCoverClass').value,
+                featured: document.getElementById('postFeatured').checked,
                 content: document.getElementById('editorContent').innerHTML,
                 coverImage: img || '',
                 publishedAt: currentEditId ? (posts.find(p=>p.id===currentEditId)?.publishedAt || new Date().toISOString()) : new Date().toISOString()

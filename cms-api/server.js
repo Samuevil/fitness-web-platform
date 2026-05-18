@@ -177,6 +177,7 @@ function normalizePostForSave(post) {
     category: normalizeText(post.category),
     readTime: Number.isFinite(Number(post.readTime)) ? Number(post.readTime) : 5,
     coverClass: normalizeText(post.coverClass || ''),
+    featured: Boolean(post.featured),
     content: sanitizePostContent(typeof post.content === 'string' ? post.content : ''),
     coverImage: typeof post.coverImage === 'string' ? post.coverImage.trim() : '',
     publishedAt: normalizeText(post.publishedAt) || new Date().toISOString()

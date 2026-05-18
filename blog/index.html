@@ -1858,7 +1858,8 @@
                 title: fixMojibake(post.title || ''),
                 summary: fixMojibake(post.summary || ''),
                 content: fixMojibake(post.content || ''),
-                category: normalizeCategory(fixMojibake(post.category || ''))
+                category: normalizeCategory(fixMojibake(post.category || '')),
+                featured: Boolean(post.featured)
             };
         }
 
@@ -1997,35 +1998,67 @@
                 nextBtn.disabled = !hasOverflow || footerCarouselIndex >= getFooterCarouselMaxIndex();
             }
         }
+
+        function getPostsSortedByDate() {
+            return [...allPosts].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+        }
+
+        function uniquePostsById(posts) {
+            const seen = new Set();
+            return posts.filter(post => {
+                if (!post || seen.has(post.id)) return false;
+                seen.add(post.id);
+                return true;
+            });
+        }
+
+        function takeUnusedPosts(count, excludedIds = []) {
+            const excluded = new Set(excludedIds);
+            return getPostsSortedByDate().filter(post => !excluded.has(post.id)).slice(0, count);
+        }
         
         function getHeroPosts() {
-            const postsPorCategoria = {};
-            categorias.forEach(cat => { postsPorCategoria[cat] = null; });
-            for (const post of allPosts) {
-                if (!postsPorCategoria[post.category] && categorias.includes(post.category)) {
-                    postsPorCategoria[post.category] = post;
-                }
-            }
-            return Object.values(postsPorCategoria).filter(p => p !== null).slice(0, 4);
+            const sortedPosts = getPostsSortedByDate();
+            const featuredPosts = sortedPosts.filter(post => post.featured).slice(0, 4);
+            const featuredIds = new Set(featuredPosts.map(post => post.id));
+            const fallbackPosts = sortedPosts.filter(post => !featuredIds.has(post.id)).slice(0, Math.max(4 - featuredPosts.length, 0));
+            return uniquePostsById([...featuredPosts, ...fallbackPosts]).slice(0, 4);
         }
         
         function getRecentPosts() {
-            return [...allPosts].sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt)).slice(0, 6);
+            return getPostsSortedByDate().slice(0, 6);
         }
         
         function getGradePosts() {
-            return [...allPosts].sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt)).slice(0, 4);
+            const excludedIds = [...getHeroPosts().map(post => post.id), ...getRecentPosts().map(post => post.id)];
+            return takeUnusedPosts(4, excludedIds);
         }
         
         function getListaVerticalPosts() {
-            return [...allPosts].sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt)).slice(4, 11);
+            const excludedIds = [
+                ...getHeroPosts().map(post => post.id),
+                ...getRecentPosts().map(post => post.id),
+                ...getGradePosts().map(post => post.id)
+            ];
+            return takeUnusedPosts(7, excludedIds);
         }
         
         function getFooterCarouselPosts() {
             if (allPosts.length === 0) return [];
-            const usedIds = [...getRecentPosts().map(p => p.id), ...getGradePosts().map(p => p.id), ...getListaVerticalPosts().map(p => p.id)];
-            const outros = allPosts.filter(p => !usedIds.includes(p.id));
-            return outros.length >= 4 ? outros.slice(0, 4) : [...allPosts].sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt)).slice(0, 4);
+            const usedIds = [
+                ...getHeroPosts().map(post => post.id),
+                ...getRecentPosts().map(post => post.id),
+                ...getGradePosts().map(post => post.id),
+                ...getListaVerticalPosts().map(post => post.id)
+            ];
+            const remainingPosts = takeUnusedPosts(4, usedIds);
+
+            if (remainingPosts.length === 4) {
+                return remainingPosts;
+            }
+
+            const fallbackPosts = getPostsSortedByDate().filter(post => !remainingPosts.some(item => item.id === post.id));
+            return uniquePostsById([...remainingPosts, ...fallbackPosts]).slice(0, 4);
         }
         
         function updateFooterCarousel() {
