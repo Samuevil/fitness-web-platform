@@ -3903,7 +3903,130 @@ footer .text-center p {
         font-size: 0.76rem;
     }
 
-    .home-blog-link {
-        font-size: 0.72rem;
+.home-blog-link {
+    font-size: 0.72rem;
+}
+}
+
+.specialties-section .row > [class*="col-"] {
+    display: flex;
+}
+
+.specialties-section .specialty-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    min-width: 0;
+    width: 100%;
+}
+
+.specialties-section .specialty-icon {
+    margin-bottom: 0;
+}
+
+.specialty-illustration {
+    width: clamp(3.2rem, 4vw, 4rem);
+    height: auto;
+    display: block;
+    flex-shrink: 0;
+}
+
+.specialty-illustration-image {
+    width: clamp(3.6rem, 4.8vw, 4.6rem);
+    aspect-ratio: 1;
+    object-fit: contain;
+}
+
+.specialties-section .specialty-card h3 {
+    margin-bottom: 0;
+    font-size: clamp(1.08rem, 0.95rem + 0.5vw, 1.3rem);
+    line-height: 1.2;
+    text-wrap: balance;
+}
+
+.specialty-title-tight {
+    font-size: inherit;
+    white-space: normal;
+}
+
+.specialties-section .specialty-card > p {
+    margin-bottom: 0;
+    font-size: clamp(0.92rem, 0.88rem + 0.2vw, 0.98rem);
+}
+
+.specialties-section .specialty-features {
+    display: grid;
+    gap: 0.65rem;
+    margin-top: auto;
+}
+
+.specialties-section .specialty-features li {
+    align-items: flex-start;
+    margin-bottom: 0;
+    font-size: clamp(0.86rem, 0.82rem + 0.15vw, 0.92rem);
+}
+
+.specialties-section .specialty-features li i {
+    margin-top: 0.2rem;
+}
+
+@media (max-width: 767px) {
+    .specialties-section .specialty-card {
+        padding: 1.15rem !important;
+        gap: 0.8rem;
+    }
+
+    .specialties-section .specialty-card h3 {
+        font-size: 1.05rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .specialties-section .row.g-4 > [class*="col-"] {
+        width: 100% !important;
+    }
+
+    .specialty-illustration {
+        width: 3.35rem;
+    }
+
+    .specialty-illustration-image {
+        width: 3.8rem;
+    }
+
+    .specialties-section .specialty-card h3 {
+        font-size: 1.08rem !important;
+    }
+
+    .specialties-section .specialty-card > p {
+        font-size: 0.9rem !important;
+        line-height: 1.55;
+    }
+
+    .specialties-section .specialty-features li {
+        font-size: 0.86rem !important;
+        line-height: 1.45;
+    }
+}
+
+@media (max-width: 420px) {
+    .specialties-section .row.g-4 > [class*="col-"] {
+        width: 100% !important;
+    }
+
+    .specialties-section .specialty-card {
+        padding: 1rem !important;
+    }
+
+    .specialties-section .specialty-card h3 {
+        font-size: 1rem !important;
+    }
+
+    .specialties-section .specialty-card > p {
+        font-size: 0.86rem !important;
+    }
+
+    .specialties-section .specialty-features li {
+        font-size: 0.82rem !important;
     }
 }
