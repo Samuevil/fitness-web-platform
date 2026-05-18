@@ -872,18 +872,26 @@
         }
         
         .footer-carousel-container {
-            position: relative;
-            max-width: 700px;
+            display: grid;
+            grid-template-columns: 48px minmax(0, 1fr) 48px;
+            align-items: center;
+            gap: 1rem;
+            max-width: 960px;
             margin: 0 auto;
-            overflow: hidden;
             touch-action: pan-y pinch-zoom;
+        }
+
+        .footer-carousel-viewport {
+            overflow: hidden;
+            min-width: 0;
         }
         
         .footer-carousel-wrapper {
             display: flex;
-            transition: transform 0.3s ease-out;
-            gap: 0;
+            gap: 1rem;
+            transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
             cursor: grab;
+            will-change: transform;
         }
         
         .footer-carousel-wrapper:active {
@@ -891,7 +899,7 @@
         }
         
         .footer-carousel-item {
-            flex: 0 0 100%;
+            flex: 0 0 calc((100% - 1rem) / 2);
             display: flex;
             gap: 15px;
             align-items: flex-start;
@@ -899,22 +907,28 @@
             text-decoration: none;
             cursor: pointer;
             padding: 1rem;
-            border-radius: 12px;
-            transition: all 0.2s ease;
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+            min-width: 0;
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
         }
         
         .footer-carousel-item:hover {
             background: #f1f5f9;
+            border-color: rgba(255, 45, 45, 0.16);
+            transform: translateY(-2px);
+            box-shadow: 0 18px 34px rgba(15, 23, 42, 0.1);
         }
         
         .footer-carousel-image {
-            width: 90px;
-            height: 70px;
+            width: 108px;
+            height: 78px;
             background-size: cover;
             background-position: center;
             background-color: #1a1a2e;
             flex-shrink: 0;
-            border-radius: 8px;
+            border-radius: 10px;
         }
         
         .footer-carousel-content {
@@ -931,7 +945,7 @@
         }
         
         .footer-carousel-title {
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             color: #1e2a3a;
             font-weight: 600;
             line-height: 1.3;
@@ -941,25 +955,30 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+
+        .footer-carousel-empty {
+            width: 100%;
+            padding: 2rem 1rem;
+            text-align: center;
+            color: #64748b;
+        }
         
         .footer-carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+            position: static;
             background: rgba(255, 255, 255, 0.95);
             color: #ff2d2d;
             border: 1px solid #e2e8f0;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             cursor: pointer;
-            z-index: 10;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+            justify-self: center;
         }
 
         .footer-carousel-btn:hover {
@@ -967,9 +986,13 @@
             color: white;
             border-color: #ff2d2d;
         }
-        
-        .footer-carousel-btn-prev { left: 10px; }
-        .footer-carousel-btn-next { right: 10px; }
+
+        .footer-carousel-btn:disabled {
+            opacity: 0.45;
+            cursor: default;
+            pointer-events: none;
+            transform: scale(0.96);
+        }
         
         /* FOOTER */
         .site-footer {
@@ -1362,7 +1385,8 @@
             
             /* FOOTER CARROSSEL MOBILE - COM TOUCH */
             .footer-carousel-container {
-                padding: 0 50px;
+                grid-template-columns: 40px minmax(0, 1fr) 40px;
+                gap: 0.75rem;
             }
             
             .footer-carousel-item {
@@ -1372,7 +1396,7 @@
             }
             
             .footer-carousel-wrapper {
-                gap: 0;
+                gap: 0.75rem;
             }
             
             .footer-carousel-btn {
@@ -1380,10 +1404,7 @@
                 height: 36px;
                 font-size: 1.2rem;
             }
-            
-            .footer-carousel-btn-prev { left: 0; }
-            .footer-carousel-btn-next { right: 0; }
-            
+
             .footer-carousel-image {
                 width: 70px;
                 height: 60px;
@@ -1502,7 +1523,8 @@
             
             /* FOOTER CARROSSEL - AJUSTE FINO */
             .footer-carousel-container {
-                padding: 0 45px;
+                grid-template-columns: 34px minmax(0, 1fr) 34px;
+                gap: 0.55rem;
             }
             
             .footer-carousel-btn {
@@ -1567,7 +1589,8 @@
             }
             
             .footer-carousel-container {
-                padding: 0 40px;
+                grid-template-columns: 30px minmax(0, 1fr) 30px;
+                gap: 0.45rem;
             }
             
             .footer-carousel-btn {
@@ -1741,7 +1764,9 @@
             <div class="container">
                 <div class="footer-carousel-container" id="footerCarouselContainer">
                     <button class="footer-carousel-btn footer-carousel-btn-prev" id="footerCarouselPrevBtn" aria-label="Post anterior">‹</button>
-                    <div class="footer-carousel-wrapper" id="footerCarouselWrapper"></div>
+                    <div class="footer-carousel-viewport">
+                        <div class="footer-carousel-wrapper" id="footerCarouselWrapper"></div>
+                    </div>
                     <button class="footer-carousel-btn footer-carousel-btn-next" id="footerCarouselNextBtn" aria-label="Próximo post">›</button>
                 </div>
             </div>
@@ -1789,6 +1814,7 @@
         let touchStartX = 0;
         let touchEndX = 0;
         const postsPerPage = 9;
+        const footerCarouselMobileBreakpoint = 768;
         
         const categorias = [
             'Dicas e Técnicas de Treino',
@@ -1943,6 +1969,34 @@
                 </a>
             `;
         }
+
+        function getFooterVisibleItemsCount() {
+            return window.innerWidth < footerCarouselMobileBreakpoint ? 1 : 2;
+        }
+
+        function getFooterCarouselMaxIndex() {
+            return Math.max(footerCarouselItems.length - getFooterVisibleItemsCount(), 0);
+        }
+
+        function clampFooterCarouselIndex() {
+            footerCarouselIndex = Math.min(footerCarouselIndex, getFooterCarouselMaxIndex());
+            footerCarouselIndex = Math.max(footerCarouselIndex, 0);
+        }
+
+        function updateFooterCarouselButtons() {
+            const prevBtn = document.getElementById('footerCarouselPrevBtn');
+            const nextBtn = document.getElementById('footerCarouselNextBtn');
+            const visibleItems = getFooterVisibleItemsCount();
+            const hasOverflow = footerCarouselItems.length > visibleItems;
+
+            if (prevBtn) {
+                prevBtn.disabled = !hasOverflow || footerCarouselIndex <= 0;
+            }
+
+            if (nextBtn) {
+                nextBtn.disabled = !hasOverflow || footerCarouselIndex >= getFooterCarouselMaxIndex();
+            }
+        }
         
         function getHeroPosts() {
             const postsPorCategoria = {};
@@ -1978,42 +2032,44 @@
             const wrapper = document.getElementById('footerCarouselWrapper');
             if (!wrapper) return;
             if (footerCarouselItems.length === 0) {
-                wrapper.innerHTML = '<div class="text-center text-muted" style="width: 100%; padding: 2rem;">Nenhum post disponível</div>';
+                wrapper.innerHTML = '<div class="footer-carousel-empty">Nenhum post disponível</div>';
+                updateFooterCarouselButtons();
                 return;
             }
             
             wrapper.innerHTML = footerCarouselItems.map(post => renderFooterCarouselItem(post)).join('');
+            clampFooterCarouselIndex();
             updateCarouselPosition(false);
+            updateFooterCarouselButtons();
         }
         
         function updateCarouselPosition(animate = true) {
             const wrapper = document.getElementById('footerCarouselWrapper');
             if (!wrapper || !wrapper.children[0]) return;
-            
-            const itemWidth = wrapper.children[0].offsetWidth;
-            if (animate) {
-                wrapper.style.transition = 'transform 0.3s ease-out';
-            } else {
-                wrapper.style.transition = 'none';
-            }
-            wrapper.style.transform = `translateX(-${footerCarouselIndex * itemWidth}px)`;
+
+            const firstItem = wrapper.querySelector('.footer-carousel-item');
+            if (!firstItem) return;
+
+            const wrapperStyle = window.getComputedStyle(wrapper);
+            const gap = parseFloat(wrapperStyle.columnGap || wrapperStyle.gap || '0') || 0;
+            const itemWidth = firstItem.getBoundingClientRect().width;
+
+            wrapper.style.transition = animate ? 'transform 0.38s cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
+            wrapper.style.transform = `translateX(-${footerCarouselIndex * (itemWidth + gap)}px)`;
+            updateFooterCarouselButtons();
         }
         
         function moveFooterCarousel(direction) {
-            const totalItems = footerCarouselItems.length;
-            if (totalItems === 0) return;
-            
-            let newIndex = footerCarouselIndex + direction;
-            
-            // LOOP INFINITO
-            if (newIndex >= totalItems) {
-                newIndex = 0;
+            if (footerCarouselItems.length === 0) return;
+
+            const maxIndex = getFooterCarouselMaxIndex();
+            if (maxIndex === 0) {
+                footerCarouselIndex = 0;
+                updateCarouselPosition(true);
+                return;
             }
-            if (newIndex < 0) {
-                newIndex = totalItems - 1;
-            }
-            
-            footerCarouselIndex = newIndex;
+
+            footerCarouselIndex = Math.min(Math.max(footerCarouselIndex + direction, 0), maxIndex);
             updateCarouselPosition(true);
         }
         
@@ -2033,8 +2089,13 @@
             const wrapper = document.getElementById('footerCarouselWrapper');
             
             if (wrapper && wrapper.children[0]) {
-                const itemWidth = wrapper.children[0].offsetWidth;
-                const currentTranslate = -footerCarouselIndex * itemWidth;
+                const firstItem = wrapper.querySelector('.footer-carousel-item');
+                if (!firstItem) return;
+
+                const wrapperStyle = window.getComputedStyle(wrapper);
+                const gap = parseFloat(wrapperStyle.columnGap || wrapperStyle.gap || '0') || 0;
+                const itemWidth = firstItem.getBoundingClientRect().width;
+                const currentTranslate = -footerCarouselIndex * (itemWidth + gap);
                 wrapper.style.transform = `translateX(${currentTranslate + diff}px)`;
             }
         }
@@ -2062,7 +2123,10 @@
         function initFooterCarousel() {
             const container = document.getElementById('footerCarouselContainer');
             if (!container) return;
-            
+
+            container.ontouchstart = null;
+            container.ontouchmove = null;
+            container.ontouchend = null;
             container.addEventListener('touchstart', handleTouchStart, { passive: false });
             container.addEventListener('touchmove', handleTouchMove, { passive: false });
             container.addEventListener('touchend', handleTouchEnd);
@@ -2073,8 +2137,11 @@
             if (nextBtn) nextBtn.onclick = () => moveFooterCarousel(1);
             
             window.addEventListener('resize', () => {
+                clampFooterCarouselIndex();
                 setTimeout(() => updateCarouselPosition(false), 100);
             });
+
+            updateFooterCarouselButtons();
         }
         
         function buscarPostsHome() {
