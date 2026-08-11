@@ -31,7 +31,7 @@ Este projeto foi preparado para funcionar assim:
 - `ADMIN_USERNAME`: nome do usuário do admin
 - `ADMIN_PASSWORD`: sua senha real do admin
 - `ADMIN_JWT_SECRET`: uma chave longa e aleatória
-- `ADMIN_ORIGIN`: `https://SEU-USUARIO.github.io`
+- `ADMIN_ORIGIN`: origens autorizadas separadas por v\u00edrgula, por exemplo `https://SEU-USUARIO.github.io,http://127.0.0.1:5500`
 - `ADMIN_LOGIN_MAX_ATTEMPTS`: por exemplo `5`
 - `ADMIN_LOGIN_WINDOW_MS`: por exemplo `900000`
 - `ADMIN_SAVE_MAX_ATTEMPTS`: por exemplo `30`

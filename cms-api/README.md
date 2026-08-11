@@ -8,7 +8,7 @@ Backend para manter o blog público no GitHub Pages e publicar posts a partir do
 - `ADMIN_USERNAME=admin`
 - `ADMIN_PASSWORD=sua-senha-forte`
 - `ADMIN_JWT_SECRET=uma-chave-longa-e-secreta`
-- `ADMIN_ORIGIN=https://SEU-USUARIO.github.io`
+- `ADMIN_ORIGIN=https://SEU-USUARIO.github.io,http://127.0.0.1:5500` (origens permitidas, separadas por v\u00edrgula)
 - `ADMIN_LOGIN_MAX_ATTEMPTS=5`
 - `ADMIN_LOGIN_WINDOW_MS=900000`
 - `ADMIN_SAVE_MAX_ATTEMPTS=30`

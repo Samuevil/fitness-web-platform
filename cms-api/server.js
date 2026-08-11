@@ -45,8 +45,19 @@ if (missingEnv.length) {
   process.exit(1);
 }
 
+const allowedOrigins = ADMIN_ORIGIN
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 app.use(cors({
-  origin: ADMIN_ORIGIN,
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Origem nao autorizada pelo CORS.'));
+  },
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Authorization', 'Content-Type']
 }));
